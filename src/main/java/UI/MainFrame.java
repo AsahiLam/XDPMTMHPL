@@ -76,8 +76,12 @@ public class MainFrame extends javax.swing.JFrame {
         OnlineCourse_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting()) {
-                    getKHDataFromRow(OnlineCourse_table);
-                    Online_add_btn.setEnabled(false);
+                    
+                    if (OnlineCourse_table.getSelectedRow() != -1) {
+                        System.out.println("2");
+                        getKHDataFromRow(OnlineCourse_table);
+                        Online_add_btn.setEnabled(false);
+                    }
                 }
             }
         });
@@ -85,8 +89,11 @@ public class MainFrame extends javax.swing.JFrame {
         OnsiteCourse_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting()) {
-                    getKHDataFromRow(OnsiteCourse_table);
-                    Onsite_add_btn.setEnabled(false);
+                    if (OnsiteCourse_table.getSelectedRow() != -1) {
+                        
+                        getKHDataFromRow(OnsiteCourse_table);
+                        Onsite_add_btn.setEnabled(false);
+                    }
                 }
             }
         });
@@ -94,8 +101,10 @@ public class MainFrame extends javax.swing.JFrame {
         Instructor_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting()) {
-                    getPCDataFromRow(Instructor_table);
-                    Instructor_add_btn.setEnabled(false);
+                    if (Instructor_table.getSelectedRow() != -1) {
+                        getPCDataFromRow(Instructor_table);
+                        Instructor_add_btn.setEnabled(false);
+                    }
                 }
             }
         });
@@ -1523,37 +1532,39 @@ public class MainFrame extends javax.swing.JFrame {
         Instructor_Cbb.setEnabled(false);
         Instructor_Cbb.removeAllItems();
         Instructor_Cbb.addItem("Select instructor");
+
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void Course_title_CbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Course_title_CbbActionPerformed
+        Instructor_Cbb.removeAllItems();
+        Instructor_Cbb.addItem("Select instructor");
         if (Course_title_Cbb.getSelectedItem().equals("Select course")) {
-            Instructor_Cbb.removeAllItems();
-            Instructor_Cbb.addItem("Select instructor");
+           
         } else {
             String courseNameID = (String) Course_title_Cbb.getSelectedItem();
 
             Instructor_Cbb.setEnabled(true);
 
             List<Person> person = personBLL.getPersonNotInstructorOfCourse(Integer.parseInt(getIdFromString(courseNameID)));
-                for(Person ps: person){
-                    Instructor_Cbb.addItem(ps.getLastname()+ " " + ps.getFirstname() + " - ID: " + ps.getPersonID());
-                }
+            for (Person ps : person) {
+                System.out.println(ps.getPersonID());
+                Instructor_Cbb.addItem(ps.getLastname() + " " + ps.getFirstname() + " - ID: " + ps.getPersonID());
+            }
                 
-                    
         }
 
 
     }//GEN-LAST:event_Course_title_CbbActionPerformed
-    
-    private String getIdFromString(String nameID){
+
+    private String getIdFromString(String nameID) {
         String[] parts = nameID.split(":\\s*");
-        
-        if (parts.length == 2){
+
+        if (parts.length == 2) {
             return parts[1];
         }
         return null;
     }
-    
+
     private void hiddenLabel() {
         Course_id1.setVisible(false);
         Onsite_courseID.setVisible(false);
@@ -1614,15 +1625,17 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void getKHDataFromRow(JTable table) {
-        int selectedRow = table.getSelectedRow();
+       
 
         if (QLKH.getSelectedIndex() == 0) {
+            int selectedRow = table.getSelectedRow();
             Course_id1.setText(table.getValueAt(selectedRow, 0) + "");
             Online_title_tf.setText((String) table.getValueAt(selectedRow, 1));
             Online_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
             Department_Cbb1.setSelectedItem((String) table.getValueAt(selectedRow, 3));
             url_tf.setText((String) table.getValueAt(selectedRow, 4));
         } else {
+            int selectedRow = table.getSelectedRow();
             Onsite_courseID.setText(table.getValueAt(selectedRow, 0) + "");
             Onsite_title_tf.setText((String) table.getValueAt(selectedRow, 1));
             Onsite_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
@@ -1703,9 +1716,9 @@ public class MainFrame extends javax.swing.JFrame {
             List<Course> course;
             if (Onsite_search.getText() == null || Onsite_search.getText().isEmpty() || Onsite_search.getText().isBlank()) {
                 course = courseOnsiteBLL.getAllOnsiteCourse(page);
-                
+
                 totalPage = courseOnsiteBLL.getAllOnsiteCourseTotalPage();
-                
+
                 System.out.println(totalPage);
             } else {
                 String search = Onsite_search.getText();
