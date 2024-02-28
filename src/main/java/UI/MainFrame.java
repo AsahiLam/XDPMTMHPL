@@ -110,7 +110,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        ChangePageKH();
+        ChangePage();
     }
 
     /**
@@ -1723,7 +1723,6 @@ public class MainFrame extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Thêm thất bại");
             }
-            
 
         } catch (Exception ex) {
             Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -1856,24 +1855,30 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton16ActionPerformed
-    
-    private void updatePCTable(){
-        String search = Search3.getText();
-                        if(search.isBlank() || search.isEmpty() || search==null){
-                            List<CourseInstructor> updatedList = courseInstructorBLL.getListCourseInstructor(1);  // Thay thế bằng phương thức lấy danh sách từ BLL của bạn
-                            totalPage = courseInstructorBLL.getListCourseInstructorCount();
-                            PC_Pagination.setText(" / " + totalPage);
-                            PC_Page.setText("1");
-                            loadDataPC(updatedList);
-                        }
-                        else{
-                            List<CourseInstructor> updatedList = courseInstructorBLL.getCourseInstructorWithInfo(search, 1);
-                            totalPage = courseInstructorBLL.getCourseInstructorWithInfoCount(search);
-                            PC_Pagination.setText(" / " + totalPage);
-                            PC_Page.setText("1");
-                            loadDataPC(updatedList);
-                        }
+ 
+// Hàm setIcon cho các component    
+    private void setIcons() {
+        Label_QLKH_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/education.png")));
+        Label_QLPC_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/speech.png")));
+        Label_QLKQ_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/exam.png")));
+        Online_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        Onsite_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        KQ_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
     }
+
+// Ẩn các label
+    
+    private void hiddenLabel() {
+        Course_id1.setVisible(false);
+        Onsite_courseID.setVisible(false);
+        Course_id.setVisible(false);
+        Instructor_id.setVisible(false);
+    }
+    
+
+// Hàm lấy id từ chuỗi trong combobox 
+    
     private int getIdFromString2(String nameID) {
         String[] parts = nameID.split("ID:");
         //System.out.println("Debug - nameID: " + nameID); // Thêm dòng này để xem giá trị của nameID
@@ -1888,16 +1893,19 @@ public class MainFrame extends javax.swing.JFrame {
         return -1;
     }
 
-    private void setIcons() {
-        Label_QLKH_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/education.png")));
-        Label_QLPC_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/speech.png")));
-        Label_QLKQ_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/exam.png")));
-        Online_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
-        Onsite_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
-        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
-        KQ_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+// Hàm lấy id từ chuỗi trong combobox    
+    
+    private String getIdFromString(String nameID) {
+        String[] parts = nameID.split(":\\s*");
+
+        if (parts.length == 2) {
+            return parts[1];
+        }
+        return null;
     }
 
+// Hàm lấy title từ chuỗi trong combobox
+    
     public static String extractTitle(String fullTitle) {
 
         // Tách title từ chuỗi theo dấu gạch ngang và loại bỏ khoảng trắng
@@ -1908,143 +1916,9 @@ public class MainFrame extends javax.swing.JFrame {
             return null;  // Trả về null nếu không tìm thấy phần title
         }
     }
-
-    private int findPersonID(List<CourseInstructor> courseInstructors, String selectedInstructor) {
-        for (CourseInstructor ci : courseInstructors) {
-            String instructorName = ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname();
-            if (instructorName.equals(selectedInstructor)) {
-                return ci.getInstructor().getPersonID();
-            }
-        }
-        return -1; // Trả về giá trị không hợp lệ nếu không tìm thấy
-    }
-
-    private String getIdFromString(String nameID) {
-        String[] parts = nameID.split(":\\s*");
-
-        if (parts.length == 2) {
-            return parts[1];
-        }
-        return null;
-    }
-
-    private void hiddenLabel() {
-        Course_id1.setVisible(false);
-        Onsite_courseID.setVisible(false);
-        Course_id.setVisible(false);
-        Instructor_id.setVisible(false);
-    }
-
-    private void fillData() {
-
-        List<Department> dpl = departmentBLL.getDepartmentList();
-        for (Department dp : dpl) {
-            String name = dp.getName();
-            Department_Cbb1.addItem(name);
-            Department_Cbb2.addItem(name);
-        }
-
-        List<Course> list = courseBLL.getAllCourse();
-        for (Course c : list) {
-            String course = c.getTitle() + " - ID: " + c.getCourseID();
-            Course_title_Cbb.addItem(course);
-        }
-    }
-
-    private void clearPC(){
-        Instructor_add_btn.setEnabled(true);
-        Course_title_Cbb.setEnabled(true);
-        Course_title_Cbb.setSelectedIndex(0);
-        Instructor_Cbb.setEnabled(false);
-        Instructor_Cbb.removeAllItems();
-        Instructor_Cbb.addItem("Select instructor");
-    }
     
-    private void fillInstructor(CourseInstructor ci) {
-        List<Person> person = personBLL.getPersonNotInstructorOfCourse(ci.getCourseID());
-        Instructor_Cbb.removeAllItems();
-        Instructor_Cbb.addItem(ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname());
-        for (Person ps : person) {
-            Instructor_Cbb.addItem(ps.getLastname() + " " + ps.getFirstname() + " - ID: " + ps.getPersonID());
-        }
-    }
-
-    private void loadDataKH(List<Course> courses, JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
-
-        for (Course c : courses) {
-            if (c instanceof CourseOnline) {
-                CourseOnline online = (CourseOnline) c;
-                Object[] data = {c.getCourseID(), c.getTitle(), c.getCredits(), c.getDepartment().getName(), online.getURL()};
-                model.addRow(data);
-            } else {
-                CourseOnSite onsite = (CourseOnSite) c;
-                Object[] data = {c.getCourseID(), c.getTitle(), c.getCredits(), c.getDepartment().getName(), onsite.getLocation(), onsite.getDays(), onsite.getTime()};
-                model.addRow(data);
-            }
-        }
-    }
-
-    private void loadDataPC(List<CourseInstructor> list) {
-        DefaultTableModel model = (DefaultTableModel) Instructor_table.getModel();
-        model.setRowCount(0);
-
-        for (CourseInstructor ci : list) {
-            Object[] data = {ci.getCourseID(), ci.getTitle(), ci.getInstructor().getPersonID(), ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname()};
-            model.addRow(data);
-        }
-        int rowCount = model.getRowCount();
-        // Nếu có ít nhất một dòng mới được thêm
-        if (model.getRowCount() > rowCount) {
-            // Chọn dòng cuối cùng (dòng mới thêm)
-            int rowIndex = model.getRowCount() - 1;
-            Instructor_table.setRowSelectionInterval(rowIndex, rowIndex);
-
-            // Cuộn đến dòng được chọn
-            Instructor_table.scrollRectToVisible(Instructor_table.getCellRect(rowIndex, 0, true));
-        }
-    }
-
-    private void getKHDataFromRow(JTable table) {
-        int selectedRow = table.getSelectedRow();
-
-        if (QLKH.getSelectedIndex() == 0) {
-            Course_id1.setText(table.getValueAt(selectedRow, 0) + "");
-            Online_title_tf.setText((String) table.getValueAt(selectedRow, 1));
-            Online_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
-            Department_Cbb1.setSelectedItem((String) table.getValueAt(selectedRow, 3));
-            url_tf.setText((String) table.getValueAt(selectedRow, 4));
-        } else {
-            Onsite_courseID.setText(table.getValueAt(selectedRow, 0) + "");
-            Onsite_title_tf.setText((String) table.getValueAt(selectedRow, 1));
-            Onsite_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
-            Department_Cbb2.setSelectedItem((String) table.getValueAt(selectedRow, 3));
-            location_tf.setText((String) table.getValueAt(selectedRow, 4));
-            days_tf.setText((String) table.getValueAt(selectedRow, 5));
-            time_tf.setText(table.getValueAt(selectedRow, 6) + "");
-        }
-    }
-
-    private void getPCDataFromRow(JTable table) {
-        int selectedRow = table.getSelectedRow();
-        CourseInstructor ci = courseInstructorBLL.getCourseInstructorByIDs((int) table.getValueAt(selectedRow, 0), (int) table.getValueAt(selectedRow, 2));
-        String nameID = table.getValueAt(selectedRow, 1) + " - ID: " + table.getValueAt(selectedRow, 0);
-
-        Course_title_Cbb.setSelectedItem(nameID);
-        Course_title_Cbb.setEnabled(false);
-
-        Course_id.setText(table.getValueAt(selectedRow, 0) + "");
-
-        Instructor_id.setText(table.getValueAt(selectedRow, 2) + "");
-
-        fillInstructor(ci);
-
-        Instructor_Cbb.setSelectedItem(table.getValueAt(selectedRow, 3));
-        Instructor_Cbb.setEnabled(true);
-    }
-
-    private void ChangePageKH() {
+// Hàm cập nhật trang    
+    private void ChangePage() {
         Online_page.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -2099,7 +1973,71 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+    //======================
+    //  QUẢN LÝ KHOÁ HỌC 
+    //======================
 
+// Hàm ghi dữ liệu vào combobox 
+    
+    private void fillData() {
+        List<Department> dpl = departmentBLL.getDepartmentList();
+        for (Department dp : dpl) {
+            String name = dp.getName();
+            Department_Cbb1.addItem(name);
+            Department_Cbb2.addItem(name);
+        }
+
+        List<Course> list = courseBLL.getAllCourse();
+        for (Course c : list) {
+            String course = c.getTitle() + " - ID: " + c.getCourseID();
+            Course_title_Cbb.addItem(course);
+        }
+    }
+    
+// Hàm ghi dữ liệu lên table khoá học
+    
+    private void loadDataKH(List<Course> courses, JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        for (Course c : courses) {
+            if (c instanceof CourseOnline) {
+                CourseOnline online = (CourseOnline) c;
+                Object[] data = {c.getCourseID(), c.getTitle(), c.getCredits(), c.getDepartment().getName(), online.getURL()};
+                model.addRow(data);
+            } else {
+                CourseOnSite onsite = (CourseOnSite) c;
+                Object[] data = {c.getCourseID(), c.getTitle(), c.getCredits(), c.getDepartment().getName(), onsite.getLocation(), onsite.getDays(), onsite.getTime()};
+                model.addRow(data);
+            }
+        }
+    }
+
+// Hàm lấy dữ liệu từ table khoá học 
+    
+    private void getKHDataFromRow(JTable table) {
+        int selectedRow = table.getSelectedRow();
+
+        if (QLKH.getSelectedIndex() == 0) {
+            Course_id1.setText(table.getValueAt(selectedRow, 0) + "");
+            Online_title_tf.setText((String) table.getValueAt(selectedRow, 1));
+            Online_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
+            Department_Cbb1.setSelectedItem((String) table.getValueAt(selectedRow, 3));
+            url_tf.setText((String) table.getValueAt(selectedRow, 4));
+        } else {
+            Onsite_courseID.setText(table.getValueAt(selectedRow, 0) + "");
+            Onsite_title_tf.setText((String) table.getValueAt(selectedRow, 1));
+            Onsite_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
+            Department_Cbb2.setSelectedItem((String) table.getValueAt(selectedRow, 3));
+            location_tf.setText((String) table.getValueAt(selectedRow, 4));
+            days_tf.setText((String) table.getValueAt(selectedRow, 5));
+            time_tf.setText(table.getValueAt(selectedRow, 6) + "");
+        }
+    }
+
+// Hàm cập nhật trang quản lý khoá học 
+    
     private void PageKH(int page) {
         if (QLKH.getSelectedIndex() == 0) {
             List<Course> course;
@@ -2132,6 +2070,105 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    //======================
+    //  QUẢN LÝ PHÂN CÔNG
+    //======================
+    
+// Hàm tìm Instructor
+    
+    private int findPersonID(List<CourseInstructor> courseInstructors, String selectedInstructor) {
+        for (CourseInstructor ci : courseInstructors) {
+            String instructorName = ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname();
+            if (instructorName.equals(selectedInstructor)) {
+                return ci.getInstructor().getPersonID();
+            }
+        }
+        return -1; // Trả về giá trị không hợp lệ nếu không tìm thấy
+    }
+
+// Hàm cập nhật Instructor combobox
+    
+    private void fillInstructor(CourseInstructor ci) {
+        List<Person> person = personBLL.getPersonNotInstructorOfCourse(ci.getCourseID());
+        Instructor_Cbb.removeAllItems();
+        Instructor_Cbb.addItem(ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname());
+        for (Person ps : person) {
+            Instructor_Cbb.addItem(ps.getLastname() + " " + ps.getFirstname() + " - ID: " + ps.getPersonID());
+        }
+    }
+
+// Hàm ghi dữ liệu lên table phân công
+    
+    private void loadDataPC(List<CourseInstructor> list) {
+        DefaultTableModel model = (DefaultTableModel) Instructor_table.getModel();
+        model.setRowCount(0);
+
+        for (CourseInstructor ci : list) {
+            Object[] data = {ci.getCourseID(), ci.getTitle(), ci.getInstructor().getPersonID(), ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname()};
+            model.addRow(data);
+        }
+        int rowCount = model.getRowCount();
+        // Nếu có ít nhất một dòng mới được thêm
+        if (model.getRowCount() > rowCount) {
+            // Chọn dòng cuối cùng (dòng mới thêm)
+            int rowIndex = model.getRowCount() - 1;
+            Instructor_table.setRowSelectionInterval(rowIndex, rowIndex);
+
+            // Cuộn đến dòng được chọn
+            Instructor_table.scrollRectToVisible(Instructor_table.getCellRect(rowIndex, 0, true));
+        }
+    }
+
+// Hàm cập nhật dữ liệu table phân công    
+    
+    private void updatePCTable() {
+        String search = Search3.getText();
+        if (search.isBlank() || search.isEmpty() || search == null) {
+            List<CourseInstructor> updatedList = courseInstructorBLL.getListCourseInstructor(1);  // Thay thế bằng phương thức lấy danh sách từ BLL của bạn
+            totalPage = courseInstructorBLL.getListCourseInstructorCount();
+            PC_Pagination.setText(" / " + totalPage);
+            PC_Page.setText("1");
+            loadDataPC(updatedList);
+        } else {
+            List<CourseInstructor> updatedList = courseInstructorBLL.getCourseInstructorWithInfo(search, 1);
+            totalPage = courseInstructorBLL.getCourseInstructorWithInfoCount(search);
+            PC_Pagination.setText(" / " + totalPage);
+            PC_Page.setText("1");
+            loadDataPC(updatedList);
+        }
+    }
+ 
+// Hàm lấy dữ liệu từ dòng đã chọn trong table phân công 
+    
+    private void getPCDataFromRow(JTable table) {
+        int selectedRow = table.getSelectedRow();
+        CourseInstructor ci = courseInstructorBLL.getCourseInstructorByIDs((int) table.getValueAt(selectedRow, 0), (int) table.getValueAt(selectedRow, 2));
+        String nameID = table.getValueAt(selectedRow, 1) + " - ID: " + table.getValueAt(selectedRow, 0);
+
+        Course_title_Cbb.setSelectedItem(nameID);
+        Course_title_Cbb.setEnabled(false);
+
+        Course_id.setText(table.getValueAt(selectedRow, 0) + "");
+
+        Instructor_id.setText(table.getValueAt(selectedRow, 2) + "");
+
+        fillInstructor(ci);
+
+        Instructor_Cbb.setSelectedItem(table.getValueAt(selectedRow, 3));
+        Instructor_Cbb.setEnabled(true);
+    }
+
+// Hàm tạo mới trang quản lý phân công   
+    private void clearPC() {
+        Instructor_add_btn.setEnabled(true);
+        Course_title_Cbb.setEnabled(true);
+        Course_title_Cbb.setSelectedIndex(0);
+        Instructor_Cbb.setEnabled(false);
+        Instructor_Cbb.removeAllItems();
+        Instructor_Cbb.addItem("Select instructor");
+    }
+
+// Hàm cập nhật trang cho quản lý phân công    
     private void PagePC(int page) {
 
         List<CourseInstructor> course;
@@ -2147,6 +2184,39 @@ public class MainFrame extends javax.swing.JFrame {
         loadDataPC(course);
     }
 
+  
+    
+    //======================
+    //  QUẢN LÝ KẾT QUẢ 
+    //======================
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
     /**
      * @param args the command line arguments
      */
