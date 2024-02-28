@@ -13,20 +13,36 @@ import java.util.List;
  * @author lamquoc
  */
 public class CourseInstructorBLL {
-    CourseInstructorDAL courseInstructorDAL;
+    CourseInstructorDAL courseInstructorDAL = new CourseInstructorDAL();
     int numofrecords = 1;
     
     public List<CourseInstructor> getListCourseInstructor(int page){
-        courseInstructorDAL = new CourseInstructorDAL();
-        return courseInstructorDAL.getListCourseInstructor();
+        List<CourseInstructor> course = courseInstructorDAL.getListCourseInstructor();
+        int size = course.size();
+        int from, to;
+        from = (page - 1) * numofrecords;
+        to = page * numofrecords;
+        return course.subList(from, Math.min(to,size));
     }
     
     public int getListCourseInstructorCount(){
-        return courseInstructorDAL.getListCourseInstructorCount();
+        return (int) Math.ceil((double) courseInstructorDAL.getListCourseInstructorCount() / numofrecords);
     }
     
     public CourseInstructor getCourseInstructorByID(int CourseID){
         return courseInstructorDAL.getCourseInstructorById(CourseID);
     }
-        
+    
+    public List<CourseInstructor> getCourseInstructorWithInfo(String info, int page){
+        List<CourseInstructor> course = courseInstructorDAL.getCourseInstructorWithInfo(info);
+        int size = course.size();
+        int from, to;
+        from = (page - 1) * numofrecords;
+        to = page * numofrecords;
+        return course.subList(from, Math.min(to,size));
+    }
+    
+    public int getCourseInstructorWithInfoCount(String info){
+        return (int) Math.ceil((double)courseInstructorDAL.getCourseInstructorWithInfoCount(info)/ numofrecords);
+    }
 }

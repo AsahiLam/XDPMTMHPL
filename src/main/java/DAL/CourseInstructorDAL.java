@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,8 +51,10 @@ public class CourseInstructorDAL extends MyDatabaseConnection {
                     list.add(ci);
                 }
             } else {
+                
                 return null;
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -73,8 +76,10 @@ public class CourseInstructorDAL extends MyDatabaseConnection {
                     count = rs.getInt("count");
                 }
             } else {
+                
                 return 0;
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -99,12 +104,88 @@ public class CourseInstructorDAL extends MyDatabaseConnection {
                     ci.setInstructor(new Person(rs.getInt("PersonID"), rs.getString("Lastname"), rs.getString("Firstname"), Date.valueOf(rs.getString("HireDate").substring(0, 10)), null));
                 }
             } else {
+                
                 return null;
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ci;
     }
 
+    public List<CourseInstructor> getCourseInstructorWithInfo(String info) {
+        List<CourseInstructor> list = new ArrayList<>();
+        try {
+            String query = """
+                               SELECT c.CourseID,c.Title,i.PersonID,p.Lastname,p.Firstname, p.HireDate, p.EnrollmentDate FROM `Course` c 
+                                JOIN `Department` d ON c.DepartmentID = d.DepartmentID JOIN `CourseInstructor` i ON c.CourseID = i.CourseID JOIN `Person` p ON i.PersonID = p.PersonID 
+                                WHERE CAST(c.CourseID AS VARCHAR(10)) LIKE ? 
+                                        OR c.Title LIKE ? 
+                                        OR CAST(p.PersonID AS VARCHAR(10)) LIKE ? 
+                                        or p.Firstname LIKE ? 
+                                        OR P.Lastname LIKE ?
+                               """;
+
+            p = connection.prepareCall(query);
+
+            p.setString(1, "%" + info + "%");
+            p.setString(2, "%" + info + "%");
+            p.setString(3, "%" + info + "%");
+            p.setString(4, "%" + info + "%");
+            p.setString(5, "%" + info + "%");
+
+            rs = p.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    CourseInstructor ci = new CourseInstructor();
+                    ci.setCourseID(rs.getInt("CourseID"));
+                    ci.setTitle(rs.getString("Title"));
+                    ci.setInstructor(new Person(rs.getInt("PersonID"), rs.getString("Lastname"), rs.getString("Lastname"), Date.valueOf(rs.getString("HireDate").substring(0, 10)), null));
+                    list.add(ci);
+                }
+            } else {
+                
+                return null;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+    public int getCourseInstructorWithInfoCount(String info){
+        int count = 0;
+        try{
+            String query ="""
+                               SELECT COUNT(*) AS count FROM `Course` c JOIN `Department` d ON c.DepartmentID = d.DepartmentID JOIN `CourseInstructor` i ON c.CourseID = i.CourseID JOIN `Person` p ON i.PersonID = p.PersonID WHERE CAST(c.CourseID AS VARCHAR(10)) LIKE ? OR c.Title LIKE ? OR CAST(p.PersonID AS VARCHAR(10)) LIKE ? or p.Firstname LIKE ? OR P.Lastname LIKE ?
+                               """;
+            
+            p = connection.prepareCall(query);
+            
+            p.setString(1, "%" + info + "%");
+            p.setString(2, "%" + info + "%");
+            p.setString(3, "%" + info + "%");
+            p.setString(4, "%" + info + "%");
+            p.setString(5, "%" + info + "%");
+            
+            rs = p.executeQuery();
+            
+            if(rs != null){
+                while(rs.next()){
+                    count = rs.getInt("count");
+                }
+            }else {
+                
+                return 0;
+            }
+            
+            
+        }catch (SQLException ex) {
+            Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
 }

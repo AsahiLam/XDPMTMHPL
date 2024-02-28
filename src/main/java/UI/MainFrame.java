@@ -6,27 +6,18 @@ import BLL.CourseOnSiteBLL;
 import BLL.CourseOnlineBLL;
 import BLL.DepartmentBLL;
 import BLL.PersonBLL;
-import DAL.CourseDAL;
 import DAL.entities.Course;
 import DAL.entities.CourseInstructor;
 import DAL.entities.CourseOnSite;
 import DAL.entities.CourseOnline;
 import DAL.entities.Department;
 import DAL.entities.Person;
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -64,52 +55,37 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() throws SQLException {
         initComponents();
         cardLayout = (CardLayout) (Content.getLayout());
-
         hiddenLabel();
-
         fillData();
-
         OnlineCourse_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         OnsiteCourse_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         Instructor_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        OnlineCourse_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                if (!event.getValueIsAdjusting()) {
-                    
-                    if (OnlineCourse_table.getSelectedRow() != -1) {
-                        System.out.println("2");
-                        getKHDataFromRow(OnlineCourse_table);
-                        Online_add_btn.setEnabled(false);
-                    }
+        OnlineCourse_table.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            if (!event.getValueIsAdjusting()) {
+                if (OnlineCourse_table.getSelectedRow() != -1) {
+                    System.out.println("2");
+                    getKHDataFromRow(OnlineCourse_table);
+                    Online_add_btn.setEnabled(false);
                 }
             }
         });
-
-        OnsiteCourse_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                if (!event.getValueIsAdjusting()) {
-                    if (OnsiteCourse_table.getSelectedRow() != -1) {
-                        
-                        getKHDataFromRow(OnsiteCourse_table);
-                        Onsite_add_btn.setEnabled(false);
-                    }
+        OnsiteCourse_table.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            if (!event.getValueIsAdjusting()) {
+                if (OnsiteCourse_table.getSelectedRow() != -1) {
+                    getKHDataFromRow(OnsiteCourse_table);
+                    Onsite_add_btn.setEnabled(false);
                 }
             }
         });
-
-        Instructor_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                if (!event.getValueIsAdjusting()) {
-                    if (Instructor_table.getSelectedRow() != -1) {
-                        getPCDataFromRow(Instructor_table);
-                        Instructor_add_btn.setEnabled(false);
-                    }
+        Instructor_table.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            if (!event.getValueIsAdjusting()) {
+                if (Instructor_table.getSelectedRow() != -1) {
+                    getPCDataFromRow(Instructor_table);
+                    Instructor_add_btn.setEnabled(false);
                 }
             }
         });
-
-        ChangePageKH();
+        ChangePage();
     }
 
     /**
@@ -192,14 +168,14 @@ public class MainFrame extends javax.swing.JFrame {
         Instructor_table = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         Search3 = new javax.swing.JTextField();
-        jButton9 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jButton10 = new javax.swing.JButton();
+        CourseInstructor_search_btn = new javax.swing.JButton();
+        PC_Pagination = new javax.swing.JLabel();
+        PC_PreviousPage = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
+        PC_NextPage = new javax.swing.JButton();
         Instructor_add_btn = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
-        jTextField1 = new javax.swing.JTextField();
+        PC_Page = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         title1 = new javax.swing.JLabel();
         Course_title_Cbb = new javax.swing.JComboBox<>();
@@ -936,16 +912,26 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton9.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/loupe.png")); // NOI18N
-        jButton9.setBorder(null);
-        jButton9.setBorderPainted(false);
-        jButton9.setContentAreaFilled(false);
-        jButton9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton9.setFocusPainted(false);
+        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/loupe.png")); // NOI18N
+        CourseInstructor_search_btn.setBorder(null);
+        CourseInstructor_search_btn.setBorderPainted(false);
+        CourseInstructor_search_btn.setContentAreaFilled(false);
+        CourseInstructor_search_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        CourseInstructor_search_btn.setFocusPainted(false);
+        CourseInstructor_search_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CourseInstructor_search_btnMouseClicked(evt);
+            }
+        });
 
-        jLabel5.setText("Pagination");
+        PC_Pagination.setText("Pagination");
 
-        jButton10.setText("<<");
+        PC_PreviousPage.setText("<<");
+        PC_PreviousPage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PC_PreviousPageMouseClicked(evt);
+            }
+        });
 
         jButton11.setBackground(new java.awt.Color(236, 88, 88));
         jButton11.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
@@ -957,7 +943,12 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton12.setText(">>");
+        PC_NextPage.setText(">>");
+        PC_NextPage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PC_NextPageMouseClicked(evt);
+            }
+        });
 
         Instructor_add_btn.setBackground(new java.awt.Color(236, 88, 88));
         Instructor_add_btn.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
@@ -971,9 +962,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        PC_Page.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                PC_PageActionPerformed(evt);
             }
         });
 
@@ -1042,7 +1033,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGroup(QLPCLayout.createSequentialGroup()
                                 .addComponent(Search3, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(CourseInstructor_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(QLPCLayout.createSequentialGroup()
                                 .addComponent(Instructor_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1055,13 +1046,13 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(QLPCLayout.createSequentialGroup()
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(QLPCLayout.createSequentialGroup()
-                                .addComponent(jButton10)
+                                .addComponent(PC_PreviousPage)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(PC_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel5)
+                                .addComponent(PC_Pagination)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton12))
+                                .addComponent(PC_NextPage))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(25, Short.MAX_VALUE))))
         );
@@ -1073,7 +1064,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(43, 43, 43)
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(Search3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton9))
+                            .addComponent(CourseInstructor_search_btn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Instructor_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1102,10 +1093,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton10)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton12)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PC_PreviousPage)
+                    .addComponent(PC_Pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PC_NextPage)
+                    .addComponent(PC_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18))
         );
 
@@ -1306,7 +1297,6 @@ public class MainFrame extends javax.swing.JFrame {
         Panel_QLKH.setBackground(new Color(255, 120, 108));
         Panel_QLPC.setBackground(new Color(236, 88, 88));
         Panel_QLKQ.setBackground(new Color(236, 88, 88));
-
     }//GEN-LAST:event_Panel_QLKHMouseClicked
 
     private void Panel_QLPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Panel_QLPCMouseClicked
@@ -1315,8 +1305,10 @@ public class MainFrame extends javax.swing.JFrame {
         Panel_QLPC.setBackground(new Color(255, 120, 108));
         Panel_QLKQ.setBackground(new Color(236, 88, 88));
         List<CourseInstructor> list = courseInstructorBLL.getListCourseInstructor(1);
+        totalPage = courseInstructorBLL.getListCourseInstructorCount();
+        PC_Pagination.setText(" / " + totalPage);
+        PC_Page.setText("1");
         loadDataPC(list);
-
     }//GEN-LAST:event_Panel_QLPCMouseClicked
 
     private void Panel_QLKQMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Panel_QLKQMouseClicked
@@ -1432,7 +1424,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void QLKHStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_QLKHStateChanged
         List<Course> course;
         if (QLKH.getSelectedIndex() == 0) {
-
             course = courseOnlineBLL.getAllOnlineCourse(1);
             Online_page.setText("1");
             totalPage = courseOnlineBLL.getAllOnlineCourseTotalPage();
@@ -1454,7 +1445,6 @@ public class MainFrame extends javax.swing.JFrame {
         Online_credits_tf.setText(null);
         Department_Cbb1.setSelectedItem("Select department");
         url_tf.setText(null);
-
     }//GEN-LAST:event_Online_clear_btnMouseClicked
 
     private void Onsite_clear_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Onsite_clear_btnMouseClicked
@@ -1466,7 +1456,6 @@ public class MainFrame extends javax.swing.JFrame {
         location_tf.setText(null);
         days_tf.setText(null);
         time_tf.setText(null);
-
     }//GEN-LAST:event_Onsite_clear_btnMouseClicked
 
     private void Online_previousPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Online_previousPageMouseClicked
@@ -1475,7 +1464,6 @@ public class MainFrame extends javax.swing.JFrame {
             page = page - 1;
             Online_page.setText(page + "");
         } else {
-
         }
     }//GEN-LAST:event_Online_previousPageMouseClicked
 
@@ -1485,7 +1473,6 @@ public class MainFrame extends javax.swing.JFrame {
             page = page + 1;
             Online_page.setText(page + "");
         } else {
-
         }
     }//GEN-LAST:event_Online_nextPageMouseClicked
 
@@ -1495,7 +1482,6 @@ public class MainFrame extends javax.swing.JFrame {
             page = page - 1;
             Onsite_page.setText(page + "");
         } else {
-
         }
     }//GEN-LAST:event_Onsite_previousPageMouseClicked
 
@@ -1505,7 +1491,6 @@ public class MainFrame extends javax.swing.JFrame {
             page = page + 1;
             Onsite_page.setText(page + "");
         } else {
-
         }
     }//GEN-LAST:event_Onsite_nextPageMouseClicked
 
@@ -1521,9 +1506,9 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void PC_PageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PC_PageActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_PC_PageActionPerformed
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
         Instructor_add_btn.setEnabled(true);
@@ -1532,33 +1517,60 @@ public class MainFrame extends javax.swing.JFrame {
         Instructor_Cbb.setEnabled(false);
         Instructor_Cbb.removeAllItems();
         Instructor_Cbb.addItem("Select instructor");
-
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void Course_title_CbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Course_title_CbbActionPerformed
         Instructor_Cbb.removeAllItems();
         Instructor_Cbb.addItem("Select instructor");
         if (Course_title_Cbb.getSelectedItem().equals("Select course")) {
-           
         } else {
             String courseNameID = (String) Course_title_Cbb.getSelectedItem();
-
             Instructor_Cbb.setEnabled(true);
-
             List<Person> person = personBLL.getPersonNotInstructorOfCourse(Integer.parseInt(getIdFromString(courseNameID)));
             for (Person ps : person) {
-                System.out.println(ps.getPersonID());
                 Instructor_Cbb.addItem(ps.getLastname() + " " + ps.getFirstname() + " - ID: " + ps.getPersonID());
             }
-                
         }
-
-
     }//GEN-LAST:event_Course_title_CbbActionPerformed
+
+    private void CourseInstructor_search_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CourseInstructor_search_btnMouseClicked
+        String search = Search3.getText();
+        List<CourseInstructor> list;
+        if (search.isBlank() && search.isEmpty() && search == null) {
+            list = courseInstructorBLL.getListCourseInstructor(1);
+            totalPage = courseInstructorBLL.getListCourseInstructorCount();
+            PC_Pagination.setText(" / " + totalPage);
+            PC_Page.setText("1");
+            loadDataPC(list);
+        } else {
+            list = courseInstructorBLL.getCourseInstructorWithInfo(search, 1);
+            totalPage = courseInstructorBLL.getCourseInstructorWithInfoCount(search);
+            PC_Pagination.setText(" / " + totalPage);
+            PC_Page.setText("1");
+            loadDataPC(list);
+        }
+    }//GEN-LAST:event_CourseInstructor_search_btnMouseClicked
+
+    private void PC_NextPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PC_NextPageMouseClicked
+        int page = Integer.parseInt(PC_Page.getText());
+        if (page < totalPage) {
+            page = page + 1;
+            PC_Page.setText(page + "");
+        } else {
+        }
+    }//GEN-LAST:event_PC_NextPageMouseClicked
+
+    private void PC_PreviousPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PC_PreviousPageMouseClicked
+        int page = Integer.parseInt(PC_Page.getText());
+        if (page > 1) {
+            page = page - 1;
+            PC_Page.setText(page + "");
+        } else {
+        }
+    }//GEN-LAST:event_PC_PreviousPageMouseClicked
 
     private String getIdFromString(String nameID) {
         String[] parts = nameID.split(":\\s*");
-
         if (parts.length == 2) {
             return parts[1];
         }
@@ -1573,14 +1585,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void fillData() {
-
         List<Department> dpl = departmentBLL.getDepartmentList();
         for (Department dp : dpl) {
             String name = dp.getName();
             Department_Cbb1.addItem(name);
             Department_Cbb2.addItem(name);
         }
-
         List<Course> list = courseBLL.getAllCourse();
         for (Course c : list) {
             String course = c.getTitle() + " - ID: " + c.getCourseID();
@@ -1600,7 +1610,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void loadDataKH(List<Course> courses, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-
         for (Course c : courses) {
             if (c instanceof CourseOnline) {
                 CourseOnline online = (CourseOnline) c;
@@ -1617,7 +1626,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void loadDataPC(List<CourseInstructor> list) {
         DefaultTableModel model = (DefaultTableModel) Instructor_table.getModel();
         model.setRowCount(0);
-
         for (CourseInstructor ci : list) {
             Object[] data = {ci.getCourseID(), ci.getTitle(), ci.getInstructor().getPersonID(), ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname()};
             model.addRow(data);
@@ -1625,8 +1633,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void getKHDataFromRow(JTable table) {
-       
-
         if (QLKH.getSelectedIndex() == 0) {
             int selectedRow = table.getSelectedRow();
             Course_id1.setText(table.getValueAt(selectedRow, 0) + "");
@@ -1653,15 +1659,13 @@ public class MainFrame extends javax.swing.JFrame {
         Course_title_Cbb.setSelectedItem(nameID);
         Course_title_Cbb.setEnabled(false);
         Course_id.setText(table.getValueAt(selectedRow, 0) + "");
-
         Instructor_id.setText(table.getValueAt(selectedRow, 2) + "");
         fillInstructor(ci);
-
         Instructor_Cbb.setSelectedItem(table.getValueAt(selectedRow, 3));
         Instructor_Cbb.setEnabled(true);
     }
 
-    private void ChangePageKH() {
+    private void ChangePage() {
         Online_page.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -1692,9 +1696,28 @@ public class MainFrame extends javax.swing.JFrame {
 
             }
 
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 int page = Integer.parseInt(Onsite_page.getText());
                 PageKH(page);
+            }
+        });
+        PC_Page.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                int page = Integer.parseInt(PC_Page.getText());
+                PagePC(page);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                int page = Integer.parseInt(PC_Page.getText());
+                PagePC(page);
             }
         });
     }
@@ -1702,11 +1725,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void PageKH(int page) {
         if (QLKH.getSelectedIndex() == 0) {
             List<Course> course;
-            if (Online_search.getText() == null || Online_search.getText().isEmpty() || Online_search.getText().isBlank()) {
+            String search = Online_search.getText();
+            if (search == null || search.isEmpty() || search.isBlank()) {
                 course = courseOnlineBLL.getAllOnlineCourse(page);
                 totalPage = courseOnlineBLL.getAllOnlineCourseTotalPage();
             } else {
-                String search = Online_search.getText();
                 course = courseOnlineBLL.getCourseWithInfo(search, page);
                 totalPage = courseOnlineBLL.getCourseWithInfoTotalPage(search);
             }
@@ -1714,14 +1737,12 @@ public class MainFrame extends javax.swing.JFrame {
             loadDataKH(course, OnlineCourse_table);
         } else {
             List<Course> course;
-            if (Onsite_search.getText() == null || Onsite_search.getText().isEmpty() || Onsite_search.getText().isBlank()) {
+            String search = Onsite_search.getText();
+            if (search == null || search.isEmpty() || search.isBlank()) {
                 course = courseOnsiteBLL.getAllOnsiteCourse(page);
-
                 totalPage = courseOnsiteBLL.getAllOnsiteCourseTotalPage();
-
                 System.out.println(totalPage);
             } else {
-                String search = Onsite_search.getText();
                 course = courseOnsiteBLL.getCourseWithInfo(search, page);
                 totalPage = courseOnsiteBLL.getCourseWithInfoTotalPage(search);
                 System.out.println(totalPage);
@@ -1729,6 +1750,21 @@ public class MainFrame extends javax.swing.JFrame {
             Onsite_pagination.setText(" / " + totalPage);
             loadDataKH(course, OnsiteCourse_table);
         }
+    }
+
+    private void PagePC(int page) {
+
+        List<CourseInstructor> course;
+        String search3 = Search3.getText();
+        if (search3 == null || search3.isEmpty() || search3.isBlank()) {
+            course = courseInstructorBLL.getListCourseInstructor(page);
+            totalPage = courseInstructorBLL.getListCourseInstructorCount();
+        } else {
+            course = courseInstructorBLL.getCourseInstructorWithInfo(search3, page);
+            totalPage = courseInstructorBLL.getCourseInstructorWithInfoCount(search3);
+        }
+        PC_Pagination.setText(" / " + totalPage);
+        loadDataPC(course);
     }
 
     /**
@@ -1759,13 +1795,11 @@ public class MainFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new MainFrame().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new MainFrame().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
@@ -1774,6 +1808,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel Background;
     private javax.swing.JLabel CloseBtn;
     private javax.swing.JPanel Content;
+    private javax.swing.JButton CourseInstructor_search_btn;
     private javax.swing.JLabel Course_id;
     private javax.swing.JLabel Course_id1;
     private javax.swing.JComboBox<String> Course_title_Cbb;
@@ -1822,6 +1857,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel Onsite_title;
     private javax.swing.JTextField Onsite_title_tf;
     private javax.swing.JButton Onsite_update_btn;
+    private javax.swing.JButton PC_NextPage;
+    private javax.swing.JTextField PC_Page;
+    private javax.swing.JLabel PC_Pagination;
+    private javax.swing.JButton PC_PreviousPage;
     private javax.swing.JPanel Panel_QLKH;
     private javax.swing.JPanel Panel_QLKQ;
     private javax.swing.JPanel Panel_QLPC;
@@ -1834,9 +1873,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel days;
     private javax.swing.JTextField days_tf;
     private javax.swing.JLabel department;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
@@ -1844,9 +1881,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel3;
@@ -1859,7 +1894,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel location;
     private javax.swing.JTextField location_tf;
     private javax.swing.JLabel time;

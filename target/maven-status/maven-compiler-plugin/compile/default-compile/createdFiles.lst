@@ -3,6 +3,7 @@ UI/MainFrame$9.class
 UI/MainFrame$47.class
 UI/MainFrame$34.class
 UI/MainFrame$44.class
+UI/MainFrame$54.class
 UI/MainFrame$6.class
 UI/MainFrame$24.class
 DAL/PersonDAL.class
@@ -44,6 +45,7 @@ UI/MainFrame$49.class
 DAL/CourseOnlineDAL.class
 DAL/entities/CourseOnSite.class
 UI/MainFrame$1.class
+UI/MainFrame$55.class
 DAL/entities/CourseOnline.class
 UI/MainFrame$45.class
 UI/MainFrame$7.class
@@ -56,6 +58,7 @@ UI/MainFrame$22.class
 UI/MainFrame$33.class
 UI/MainFrame$13.class
 BLL/CourseOnlineBLL.class
+UI/MainFrame$53.class
 UI/MainFrame.class
 DAL/CourseOnsiteDAL.class
 UI/MainFrame$48.class
@@ -68,5 +71,6 @@ DAL/DepartmentDAL.class
 UI/MainFrame$41.class
 UI/MainFrame$3.class
 UI/MainFrame$21.class
+UI/MainFrame$56.class
 UI/MainFrame$16.class
 BLL/CourseInstructorBLL.class

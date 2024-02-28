@@ -46,5 +46,5 @@
         <maven.compiler.target>21</maven.compiler.target>
         <exec.mainClass>com.mycompany.project_1.Project_1</exec.mainClass>
     </properties>
-    
+    <name>Project_1</name>
 </project>
