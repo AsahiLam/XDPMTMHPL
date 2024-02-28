@@ -1,10 +1,11 @@
+
+package DAL;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DAL;
 
-import BLL.PersonBLL;
 import DAL.entities.CourseInstructor;
 import DAL.entities.Person;
 import java.sql.Connection;
@@ -12,7 +13,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author lamquoc
  */
-public class CourseInstructorDAL extends MyDatabaseConnection {
+public class CourseInstructorDAL extends MyDatabaseConnection{
 
     Connection connection = null;
     PreparedStatement p = null;
@@ -51,16 +51,14 @@ public class CourseInstructorDAL extends MyDatabaseConnection {
                     list.add(ci);
                 }
             } else {
-                
                 return null;
             }
-            
         } catch (SQLException ex) {
             Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
-
+//
     public int getListCourseInstructorCount() {
         int count = 0;
         try {
@@ -76,16 +74,14 @@ public class CourseInstructorDAL extends MyDatabaseConnection {
                     count = rs.getInt("count");
                 }
             } else {
-                
                 return 0;
             }
-            
         } catch (SQLException ex) {
             Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return count;
     }
-
+//
     public CourseInstructor getCourseInstructorById(int CourseID) {
         CourseInstructor ci = new CourseInstructor();
         try {
@@ -104,16 +100,177 @@ public class CourseInstructorDAL extends MyDatabaseConnection {
                     ci.setInstructor(new Person(rs.getInt("PersonID"), rs.getString("Lastname"), rs.getString("Firstname"), Date.valueOf(rs.getString("HireDate").substring(0, 10)), null));
                 }
             } else {
-                
                 return null;
             }
-            
         } catch (SQLException ex) {
             Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ci;
     }
+//    
+    public CourseInstructor getCourseInstructorByIds(int CourseID, int PersonID){
+        CourseInstructor ci = new CourseInstructor();
+        
+         try {
+            String query = "SELECT c.CourseID,c.Title,i.PersonID,p.Lastname,p.Firstname, p.HireDate, p.EnrollmentDate FROM `Course` c JOIN `Department` d ON c.DepartmentID = d.DepartmentID JOIN `CourseInstructor` i ON c.CourseID = i.CourseID JOIN `Person` p ON i.PersonID = p.PersonID WHERE c.CourseID = ? AND p.PersonID = ?";
 
+            p = CourseInstructorDAL.connectDB().prepareStatement(query);
+
+            p.setInt(1, CourseID);
+            p.setInt(2, PersonID);
+            
+            rs = p.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    ci.setCourseID(CourseID);
+                    ci.setTitle("Title");
+                    ci.setInstructor(new Person(rs.getInt("PersonID"), rs.getString("Lastname"), rs.getString("Firstname"), Date.valueOf(rs.getString("HireDate").substring(0, 10)), null));
+                }
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ci;
+    }
+//    
+//   
+    private int getCourseIDFromDatabase(String courseTitle) throws SQLException {
+    int courseID = -1; // Giá trị mặc định nếu không tìm thấy
+
+    try (Connection connection = CourseInstructorDAL.connectDB();
+         PreparedStatement preparedStatement = connection.prepareStatement("SELECT CourseID FROM course WHERE Title = ?")) {
+
+        preparedStatement.setString(1, courseTitle);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                courseID = resultSet.getInt("CourseID");
+            }
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+
+    return courseID;
+}
+
+   public List<CourseInstructor> getListCourseInstructors() {
+    List<CourseInstructor> courseInstructors = new ArrayList<>();
+
+    try {
+        String query = "SELECT c.CourseID, c.Title, i.PersonID, p.Lastname, p.Firstname, p.HireDate, p.EnrollmentDate FROM `Course` c JOIN `Department` d ON c.DepartmentID = d.DepartmentID JOIN `CourseInstructor` i ON c.CourseID = i.CourseID JOIN `Person` p ON i.PersonID = p.PersonID";
+
+        p = CourseInstructorDAL.connectDB().prepareStatement(query);
+
+        rs = p.executeQuery();
+
+        while (rs.next()) {
+            CourseInstructor ci = new CourseInstructor();
+            ci.setCourseID(rs.getInt("CourseID"));
+            ci.setTitle(rs.getString("Title"));
+            ci.setInstructor(new Person(rs.getInt("PersonID"), rs.getString("Lastname"), rs.getString("Firstname"), Date.valueOf(rs.getString("HireDate").substring(0, 10)), null));
+            courseInstructors.add(ci);
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    return courseInstructors;
+}
+//
+    public boolean addCourseInstructor(CourseInstructor ct) throws SQLException {
+    Connection connection = null;
+    PreparedStatement p = null;
+
+    try {
+        // Lấy giá trị personID từ đối tượng CourseInstructor
+        int personID = ct.getInstructor().getPersonID();
+
+        // Lấy giá trị courseID từ cơ sở dữ liệu (đã có sẵn)
+        int courseID = getCourseIDFromDatabase(ct.getTitle());
+
+        String sql = "INSERT INTO courseinstructor (CourseID, PersonID) VALUES (?, ?)";
+        connection = CourseInstructorDAL.connectDB();
+        p = connection.prepareStatement(sql);
+
+        p.setInt(1, courseID);
+        p.setInt(2, personID);
+
+        int rowsAffected = p.executeUpdate();
+
+        return rowsAffected > 0;
+    } catch (SQLException ex) {
+        // Xử lý lỗi nếu cần thiết
+        ex.printStackTrace();
+        return false;
+    } finally {
+        
+        try {
+            if (p != null) {
+                p.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+    public int findCourseID(String title) throws SQLException {
+    String sql = "SELECT courseinstructor.CourseID,PersonID FROM courseinstructor, course "
+            + "WHERE course.Title = ? AND courseinstructor.CourseID = course.CourseID";
+
+    try (Connection connection = CourseInstructorDAL.connectDB();
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+        preparedStatement.setString(1, title);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            return resultSet.getInt("CourseID");
+        } else {
+            System.out.println("Can't find the course");
+            return 0;
+        }
+    }
+}
+    public boolean updateCourseInstructor(CourseInstructor ci, int oldPersonID, String oldCourseTitle,int courseID, int oldCourseID) throws SQLException {
+    String sql = "UPDATE courseinstructor SET PersonID = ?, CourseID = ? WHERE PersonID = ? AND CourseID = ?";
+
+    try (Connection connection = CourseInstructorDAL.connectDB();
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+        int personID = ci.getInstructor().getPersonID();
+         courseID = getCourseIDFromDatabase(ci.getTitle());
+
+        preparedStatement.setInt(1, personID);
+        preparedStatement.setInt(2, courseID);
+        preparedStatement.setInt(3, oldPersonID);
+        preparedStatement.setInt(4, oldCourseID);
+
+        int rowsAffected = preparedStatement.executeUpdate();
+
+        return rowsAffected > 0;
+    }
+}
+   public boolean delete(int idPerson, String Title) throws SQLException {
+    int courseID = findCourseID(Title);
+    String sql = "DELETE FROM courseinstructor WHERE CourseID = ? AND PersonID = ?";
+
+    try (Connection connection = CourseInstructorDAL.connectDB();
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+        preparedStatement.setInt(1, courseID);
+        preparedStatement.setInt(2, idPerson);
+
+        int rowsAffected = preparedStatement.executeUpdate();
+
+        return rowsAffected > 0;
+    }
+}
     public List<CourseInstructor> getCourseInstructorWithInfo(String info) {
         List<CourseInstructor> list = new ArrayList<>();
         try {
@@ -189,3 +346,4 @@ public class CourseInstructorDAL extends MyDatabaseConnection {
         return count;
     }
 }
+

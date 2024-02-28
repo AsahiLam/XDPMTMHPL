@@ -67,6 +67,12 @@ public class Person {
     public void setEnrollmentDate(Date EnrollmentDate) {
         this.EnrollmentDate = EnrollmentDate;
     }
-    
+    public String toString() {
+        return "Person{" +
+                "personID=" + PersonID +
+                ", firstname='" + Firstname + '\'' +
+                ", lastname='" + Lastname + '\'' +
+                '}';
+    }
     
 }

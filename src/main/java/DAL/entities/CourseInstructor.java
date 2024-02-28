@@ -46,7 +46,14 @@ public class CourseInstructor{
         this.Instructor = Instructor;
     }
     
-    
+    @Override
+public String toString() {
+    return "CourseInstructor{" +
+            "courseID=" + CourseID +
+            ", instructor=" + Instructor +
+            '}';
+}
+
 
     
    

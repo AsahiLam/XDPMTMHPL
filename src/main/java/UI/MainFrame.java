@@ -6,19 +6,30 @@ import BLL.CourseOnSiteBLL;
 import BLL.CourseOnlineBLL;
 import BLL.DepartmentBLL;
 import BLL.PersonBLL;
+import DAL.CourseDAL;
+import DAL.CourseInstructorDAL;
 import DAL.entities.Course;
 import DAL.entities.CourseInstructor;
 import DAL.entities.CourseOnSite;
 import DAL.entities.CourseOnline;
 import DAL.entities.Department;
 import DAL.entities.Person;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
@@ -55,37 +66,51 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() throws SQLException {
         initComponents();
         cardLayout = (CardLayout) (Content.getLayout());
+
+        setIcons();
+
         hiddenLabel();
+
         fillData();
+
         OnlineCourse_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         OnsiteCourse_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         Instructor_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        OnlineCourse_table.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
-            if (!event.getValueIsAdjusting()) {
-                if (OnlineCourse_table.getSelectedRow() != -1) {
-                    System.out.println("2");
-                    getKHDataFromRow(OnlineCourse_table);
-                    Online_add_btn.setEnabled(false);
+
+        OnlineCourse_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting()) {
+                    if (OnlineCourse_table.getSelectedRow() != -1) {
+                        getKHDataFromRow(OnlineCourse_table);
+                        Online_add_btn.setEnabled(false);
+                    }
                 }
             }
         });
-        OnsiteCourse_table.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
-            if (!event.getValueIsAdjusting()) {
-                if (OnsiteCourse_table.getSelectedRow() != -1) {
-                    getKHDataFromRow(OnsiteCourse_table);
-                    Onsite_add_btn.setEnabled(false);
+
+        OnsiteCourse_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting()) {
+                    if (OnsiteCourse_table.getSelectedRow() != -1) {
+                        getKHDataFromRow(OnsiteCourse_table);
+                        Onsite_add_btn.setEnabled(false);
+                    }
                 }
             }
         });
-        Instructor_table.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
-            if (!event.getValueIsAdjusting()) {
-                if (Instructor_table.getSelectedRow() != -1) {
-                    getPCDataFromRow(Instructor_table);
-                    Instructor_add_btn.setEnabled(false);
+
+        Instructor_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting()) {
+                    if (Instructor_table.getSelectedRow() != -1) {
+                        getPCDataFromRow(Instructor_table);
+                        Instructor_add_btn.setEnabled(false);
+                    }
                 }
             }
         });
-        ChangePage();
+
+        ChangePageKH();
     }
 
     /**
@@ -166,17 +191,17 @@ public class MainFrame extends javax.swing.JFrame {
         QLPC = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Instructor_table = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        instructor_delete = new javax.swing.JButton();
         Search3 = new javax.swing.JTextField();
         CourseInstructor_search_btn = new javax.swing.JButton();
         PC_Pagination = new javax.swing.JLabel();
         PC_PreviousPage = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
+        Instructor_update = new javax.swing.JButton();
         PC_NextPage = new javax.swing.JButton();
         Instructor_add_btn = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
         PC_Page = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        PC_clear_btn = new javax.swing.JButton();
         title1 = new javax.swing.JLabel();
         Course_title_Cbb = new javax.swing.JComboBox<>();
         title2 = new javax.swing.JLabel();
@@ -186,15 +211,30 @@ public class MainFrame extends javax.swing.JFrame {
         QLKQKH = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-        Search2 = new javax.swing.JTextField();
-        jButton14 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
         jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jButton17 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jButton18 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jButton19 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        Search2 = new javax.swing.JTextField();
+        KQ_search_btn = new javax.swing.JButton();
+        jButton16 = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -214,7 +254,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         LeftMenu.setBackground(new java.awt.Color(236, 88, 88));
         LeftMenu.setMinimumSize(new java.awt.Dimension(0, 10));
-        LeftMenu.setSize(new java.awt.Dimension(10, 10));
 
         Panel_QLKH.setBackground(new java.awt.Color(255, 120, 108));
         Panel_QLKH.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -226,7 +265,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         Label_QLKH_icon.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         Label_QLKH_icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Label_QLKH_icon.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/education.png")); // NOI18N
 
         Label_QLKH.setFont(new java.awt.Font("Silom", 1, 18)); // NOI18N
         Label_QLKH.setForeground(new java.awt.Color(255, 227, 215));
@@ -261,7 +299,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         Label_QLPC_icon.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         Label_QLPC_icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Label_QLPC_icon.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/speech.png")); // NOI18N
         Panel_QLPC.add(Label_QLPC_icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 60, 60));
 
         Label_QLPC.setFont(new java.awt.Font("Silom", 1, 18)); // NOI18N
@@ -280,7 +317,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         Label_QLKQ_icon.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         Label_QLKQ_icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Label_QLKQ_icon.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/exam.png")); // NOI18N
         Panel_QLKQ.add(Label_QLKQ_icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 60, 60));
 
         Label_QLKQ.setFont(new java.awt.Font("Silom", 1, 18)); // NOI18N
@@ -294,7 +330,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setText("PROJECT1");
 
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
-        jSeparator1.setFocusTraversalKeysEnabled(false);
         jSeparator1.setMinimumSize(new java.awt.Dimension(50, 20));
         jSeparator1.setPreferredSize(new java.awt.Dimension(50, 5));
         jSeparator1.setRequestFocusEnabled(false);
@@ -381,7 +416,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        Online_search_btn.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/loupe.png")); // NOI18N
         Online_search_btn.setBorder(null);
         Online_search_btn.setBorderPainted(false);
         Online_search_btn.setContentAreaFilled(false);
@@ -423,6 +457,11 @@ public class MainFrame extends javax.swing.JFrame {
         Online_update_btn.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
         Online_update_btn.setForeground(new java.awt.Color(255, 227, 215));
         Online_update_btn.setText("Update");
+        Online_update_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Online_update_btnMouseClicked(evt);
+            }
+        });
         Online_update_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Online_update_btnActionPerformed(evt);
@@ -592,7 +631,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(Online_nextPage)
                     .addComponent(Online_previousPage)
                     .addComponent(Online_page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         Online_search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(236, 88, 88)));
@@ -630,7 +669,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        Onsite_search_btn.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/loupe.png")); // NOI18N
         Onsite_search_btn.setBorder(null);
         Onsite_search_btn.setBorderPainted(false);
         Onsite_search_btn.setContentAreaFilled(false);
@@ -816,9 +854,9 @@ public class MainFrame extends javax.swing.JFrame {
                                     .addComponent(Onsite_credits_tf, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, OnsiteCourseLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
-                                .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Onsite_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Onsite_search_btn))
+                                .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(Onsite_search)
+                                    .addComponent(Onsite_search_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(Onsite_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -852,7 +890,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(OnsiteCourseLayout.createSequentialGroup()
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -860,7 +898,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(Onsite_nextPage)
                     .addComponent(Onsite_previousPage)
                     .addComponent(Onsite_page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         Online_search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(236, 88, 88)));
@@ -896,13 +934,18 @@ public class MainFrame extends javax.swing.JFrame {
             Instructor_table.getColumnModel().getColumn(2).setMaxWidth(100);
         }
 
-        jButton2.setBackground(new java.awt.Color(236, 88, 88));
-        jButton2.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 227, 215));
-        jButton2.setText("Delete");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        instructor_delete.setBackground(new java.awt.Color(236, 88, 88));
+        instructor_delete.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
+        instructor_delete.setForeground(new java.awt.Color(255, 227, 215));
+        instructor_delete.setText("Delete");
+        instructor_delete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                instructor_deleteMouseClicked(evt);
+            }
+        });
+        instructor_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                instructor_deleteActionPerformed(evt);
             }
         });
 
@@ -912,7 +955,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/loupe.png")); // NOI18N
         CourseInstructor_search_btn.setBorder(null);
         CourseInstructor_search_btn.setBorderPainted(false);
         CourseInstructor_search_btn.setContentAreaFilled(false);
@@ -933,13 +975,18 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton11.setBackground(new java.awt.Color(236, 88, 88));
-        jButton11.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
-        jButton11.setForeground(new java.awt.Color(255, 227, 215));
-        jButton11.setText("Update");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
+        Instructor_update.setBackground(new java.awt.Color(236, 88, 88));
+        Instructor_update.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
+        Instructor_update.setForeground(new java.awt.Color(255, 227, 215));
+        Instructor_update.setText("Update");
+        Instructor_update.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Instructor_updateMouseClicked(evt);
+            }
+        });
+        Instructor_update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
+                Instructor_updateActionPerformed(evt);
             }
         });
 
@@ -954,6 +1001,11 @@ public class MainFrame extends javax.swing.JFrame {
         Instructor_add_btn.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
         Instructor_add_btn.setForeground(new java.awt.Color(255, 227, 215));
         Instructor_add_btn.setText("Add");
+        Instructor_add_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Instructor_add_btnMouseClicked(evt);
+            }
+        });
         Instructor_add_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Instructor_add_btnActionPerformed(evt);
@@ -968,18 +1020,18 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(236, 88, 88));
-        jButton4.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 227, 215));
-        jButton4.setText("Clear");
-        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+        PC_clear_btn.setBackground(new java.awt.Color(236, 88, 88));
+        PC_clear_btn.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
+        PC_clear_btn.setForeground(new java.awt.Color(255, 227, 215));
+        PC_clear_btn.setText("Clear");
+        PC_clear_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton4MouseClicked(evt);
+                PC_clear_btnMouseClicked(evt);
             }
         });
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        PC_clear_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                PC_clear_btnActionPerformed(evt);
             }
         });
 
@@ -998,6 +1050,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         Instructor_Cbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select instructor" }));
         Instructor_Cbb.setEnabled(false);
+        Instructor_Cbb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Instructor_CbbActionPerformed(evt);
+            }
+        });
 
         Course_id.setText("jLabel2");
         Course_id.setEnabled(false);
@@ -1033,28 +1090,28 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGroup(QLPCLayout.createSequentialGroup()
                                 .addComponent(Search3, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CourseInstructor_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(CourseInstructor_search_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                             .addGroup(QLPCLayout.createSequentialGroup()
                                 .addComponent(Instructor_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                                .addComponent(Instructor_update, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(QLPCLayout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(instructor_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(PC_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(52, 52, 52))
                     .addGroup(QLPCLayout.createSequentialGroup()
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(QLPCLayout.createSequentialGroup()
                                 .addComponent(PC_PreviousPage)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(PC_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(21, 21, 21)
                                 .addComponent(PC_Pagination)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(PC_NextPage))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(25, Short.MAX_VALUE))))
+                        .addContainerGap(27, Short.MAX_VALUE))))
         );
         QLPCLayout.setVerticalGroup(
             QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1062,17 +1119,17 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(QLPCLayout.createSequentialGroup()
                         .addGap(43, 43, 43)
-                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(Search3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CourseInstructor_search_btn))
+                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Search3)
+                            .addComponent(CourseInstructor_search_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Instructor_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Instructor_update, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26)
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(instructor_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PC_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(QLPCLayout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1090,7 +1147,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(21, 21, 21)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PC_PreviousPage)
@@ -1129,6 +1186,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jLabel13.setText("StudentID:");
+
+        jLabel10.setText("Label");
+
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -1156,40 +1217,28 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(1).setMaxWidth(80);
-            jTable3.getColumnModel().getColumn(3).setMaxWidth(50);
-            jTable3.getColumnModel().getColumn(5).setMaxWidth(100);
-        }
 
-        Search2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Search2ActionPerformed(evt);
-            }
-        });
+        jButton15.setText("<<");
 
-        jButton14.setIcon(new javax.swing.ImageIcon("/Users/lamquoc/NetBeansProjects/Project_1/src/main/images/loupe.png")); // NOI18N
-        jButton14.setBorder(null);
-        jButton14.setBorderPainted(false);
-        jButton14.setContentAreaFilled(false);
-        jButton14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton14.setFocusPainted(false);
+        jLabel12.setText("Label");
 
-        jLabel7.setText("Pagination");
+        jLabel14.setText("Grade:");
 
-        jButton15.setText("jButton5");
+        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jButton16.setBackground(new java.awt.Color(236, 88, 88));
-        jButton16.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
-        jButton16.setForeground(new java.awt.Color(255, 227, 215));
-        jButton16.setText("Sửa");
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
-            }
-        });
+        jLabel2.setText("EnrollmentID:");
 
-        jButton17.setText("jButton6");
+        jLabel11.setText("Name:");
+
+        jLabel5.setText("Label");
+
+        jButton17.setText(">>");
+
+        jLabel3.setText("Label");
+
+        jLabel4.setText("CourseID:");
+
+        jLabel9.setText("Label");
 
         jButton18.setBackground(new java.awt.Color(236, 88, 88));
         jButton18.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
@@ -1201,47 +1250,156 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Title:");
+
+        jButton19.setBackground(new java.awt.Color(236, 88, 88));
+        jButton19.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
+        jButton19.setForeground(new java.awt.Color(255, 227, 215));
+        jButton19.setText("Xoá");
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton19ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Pagination");
+
+        Search2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Search2ActionPerformed(evt);
+            }
+        });
+
+        KQ_search_btn.setBorder(null);
+        KQ_search_btn.setBorderPainted(false);
+        KQ_search_btn.setContentAreaFilled(false);
+        KQ_search_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        KQ_search_btn.setFocusPainted(false);
+
+        jButton16.setBackground(new java.awt.Color(236, 88, 88));
+        jButton16.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
+        jButton16.setForeground(new java.awt.Color(255, 227, 215));
+        jButton16.setText("Sửa");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jTextField1.setText("jTextField1");
+
         javax.swing.GroupLayout QLKQKHLayout = new javax.swing.GroupLayout(QLKQKH);
         QLKQKH.setLayout(QLKQKHLayout);
         QLKQKHLayout.setHorizontalGroup(
             QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton15)
-                .addGap(85, 85, 85)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton17)
-                .addGap(254, 254, 254))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3)
+            .addGroup(QLKQKHLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(QLKQKHLayout.createSequentialGroup()
-                        .addComponent(Search2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel14)
+                        .addGap(24, 24, 24)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(QLKQKHLayout.createSequentialGroup()
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(QLKQKHLayout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, QLKQKHLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, QLKQKHLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5)))
+                        .addGap(52, 52, 52)
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel11))
+                        .addGap(47, 47, 47)
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 272, Short.MAX_VALUE)
-                        .addComponent(jButton18)
-                        .addGap(100, 100, 100)
-                        .addComponent(jButton16)))
-                .addGap(52, 52, 52))
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(QLKQKHLayout.createSequentialGroup()
+                                .addComponent(jButton18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton16)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton19))
+                            .addGroup(QLKQKHLayout.createSequentialGroup()
+                                .addComponent(Search2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(KQ_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(40, 40, 40))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
+                        .addComponent(jButton15)
+                        .addGap(42, 42, 42)
+                        .addComponent(jLabel7)
+                        .addGap(57, 57, 57)
+                        .addComponent(jButton17)
+                        .addGap(254, 254, 254))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))))
         );
         QLKQKHLayout.setVerticalGroup(
             QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(QLKQKHLayout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Search2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton14)
-                    .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton18)
-                        .addComponent(jButton16)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(QLKQKHLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(Search2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3))
+                            .addComponent(KQ_search_btn))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel8)
+                                .addComponent(jLabel9))
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(QLKQKHLayout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButton18)
+                                    .addComponent(jButton16)
+                                    .addComponent(jButton19)))
+                            .addGroup(QLKQKHLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel12)
+                                        .addComponent(jLabel11)
+                                        .addComponent(jLabel10))
+                                    .addComponent(jLabel13))
+                                .addGap(21, 21, 21)
+                                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jSeparator5))
                 .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton15)
@@ -1297,6 +1455,7 @@ public class MainFrame extends javax.swing.JFrame {
         Panel_QLKH.setBackground(new Color(255, 120, 108));
         Panel_QLPC.setBackground(new Color(236, 88, 88));
         Panel_QLKQ.setBackground(new Color(236, 88, 88));
+
     }//GEN-LAST:event_Panel_QLKHMouseClicked
 
     private void Panel_QLPCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Panel_QLPCMouseClicked
@@ -1308,7 +1467,9 @@ public class MainFrame extends javax.swing.JFrame {
         totalPage = courseInstructorBLL.getListCourseInstructorCount();
         PC_Pagination.setText(" / " + totalPage);
         PC_Page.setText("1");
+
         loadDataPC(list);
+
     }//GEN-LAST:event_Panel_QLPCMouseClicked
 
     private void Panel_QLKQMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Panel_QLKQMouseClicked
@@ -1318,33 +1479,21 @@ public class MainFrame extends javax.swing.JFrame {
         Panel_QLKQ.setBackground(new Color(255, 120, 108));
     }//GEN-LAST:event_Panel_QLKQMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void instructor_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructor_deleteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_instructor_deleteActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+    private void Instructor_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Instructor_updateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton11ActionPerformed
+    }//GEN-LAST:event_Instructor_updateActionPerformed
 
     private void Instructor_add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Instructor_add_btnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Instructor_add_btnActionPerformed
 
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton16ActionPerformed
-
-    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton18ActionPerformed
-
     private void Search3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Search3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Search3ActionPerformed
-
-    private void Search2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Search2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Search2ActionPerformed
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         mouseX = evt.getX();
@@ -1424,6 +1573,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void QLKHStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_QLKHStateChanged
         List<Course> course;
         if (QLKH.getSelectedIndex() == 0) {
+
             course = courseOnlineBLL.getAllOnlineCourse(1);
             Online_page.setText("1");
             totalPage = courseOnlineBLL.getAllOnlineCourseTotalPage();
@@ -1445,6 +1595,7 @@ public class MainFrame extends javax.swing.JFrame {
         Online_credits_tf.setText(null);
         Department_Cbb1.setSelectedItem("Select department");
         url_tf.setText(null);
+
     }//GEN-LAST:event_Online_clear_btnMouseClicked
 
     private void Onsite_clear_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Onsite_clear_btnMouseClicked
@@ -1456,6 +1607,7 @@ public class MainFrame extends javax.swing.JFrame {
         location_tf.setText(null);
         days_tf.setText(null);
         time_tf.setText(null);
+
     }//GEN-LAST:event_Onsite_clear_btnMouseClicked
 
     private void Online_previousPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Online_previousPageMouseClicked
@@ -1464,6 +1616,7 @@ public class MainFrame extends javax.swing.JFrame {
             page = page - 1;
             Online_page.setText(page + "");
         } else {
+
         }
     }//GEN-LAST:event_Online_previousPageMouseClicked
 
@@ -1473,6 +1626,7 @@ public class MainFrame extends javax.swing.JFrame {
             page = page + 1;
             Online_page.setText(page + "");
         } else {
+
         }
     }//GEN-LAST:event_Online_nextPageMouseClicked
 
@@ -1482,6 +1636,7 @@ public class MainFrame extends javax.swing.JFrame {
             page = page - 1;
             Onsite_page.setText(page + "");
         } else {
+
         }
     }//GEN-LAST:event_Onsite_previousPageMouseClicked
 
@@ -1491,6 +1646,7 @@ public class MainFrame extends javax.swing.JFrame {
             page = page + 1;
             Onsite_page.setText(page + "");
         } else {
+
         }
     }//GEN-LAST:event_Onsite_nextPageMouseClicked
 
@@ -1502,22 +1658,17 @@ public class MainFrame extends javax.swing.JFrame {
         Online_page.setText("1");
     }//GEN-LAST:event_Online_search_btnMouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void PC_clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PC_clear_btnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_PC_clear_btnActionPerformed
 
     private void PC_PageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PC_PageActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PC_PageActionPerformed
 
-    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
-        Instructor_add_btn.setEnabled(true);
-        Course_title_Cbb.setEnabled(true);
-        Course_title_Cbb.setSelectedIndex(0);
-        Instructor_Cbb.setEnabled(false);
-        Instructor_Cbb.removeAllItems();
-        Instructor_Cbb.addItem("Select instructor");
-    }//GEN-LAST:event_jButton4MouseClicked
+    private void PC_clear_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PC_clear_btnMouseClicked
+        clearPC();
+    }//GEN-LAST:event_PC_clear_btnMouseClicked
 
     private void Course_title_CbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Course_title_CbbActionPerformed
         Instructor_Cbb.removeAllItems();
@@ -1533,34 +1684,145 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_Course_title_CbbActionPerformed
 
-    private void CourseInstructor_search_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CourseInstructor_search_btnMouseClicked
-        String search = Search3.getText();
-        List<CourseInstructor> list;
-        if (search.isBlank() && search.isEmpty() && search == null) {
-            list = courseInstructorBLL.getListCourseInstructor(1);
-            totalPage = courseInstructorBLL.getListCourseInstructorCount();
-            PC_Pagination.setText(" / " + totalPage);
-            PC_Page.setText("1");
-            loadDataPC(list);
-        } else {
-            list = courseInstructorBLL.getCourseInstructorWithInfo(search, 1);
-            totalPage = courseInstructorBLL.getCourseInstructorWithInfoCount(search);
-            PC_Pagination.setText(" / " + totalPage);
-            PC_Page.setText("1");
-            loadDataPC(list);
+    private void Instructor_add_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Instructor_add_btnMouseClicked
+        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn phân công cho giảng viên này không?",
+                "Xác nhận", JOptionPane.YES_OPTION);
+        if (result == JOptionPane.NO_OPTION) {
+            return;
         }
+        // Lấy thông tin về khóa học và giảng viên được chọn
+        String selectedCourse = (String) Course_title_Cbb.getSelectedItem();
+        String selectedInstructor = (String) Instructor_Cbb.getSelectedItem();
+
+        if (selectedCourse.equals("Select course") || selectedInstructor.equals("Select instructor")) {
+            // Hiển thị thông báo hoặc xử lý lỗi nếu không có khóa học hoặc giảng viên được chọn
+            return;
+        }
+        CourseInstructor ci = new CourseInstructor();
+
+        ci.setInstructor(new Person()); // Khởi tạo đối tượng Instructor
+        // Tách thông tin từ chuỗi selectedInstructor
+        int personID = getIdFromString2(selectedInstructor);
+        //int courseID = getIdFromString2(selectedCourse);
+        String Title = extractTitle(selectedCourse);
+
+        System.out.println("Debug - title: " + Title);
+        ci.getInstructor().setPersonID(personID);
+        ci.setTitle(Title);
+        ci.getInstructor().setFirstname("");
+        ci.getInstructor().setLastname("");
+        ci.setCourseID(0);
+
+        try {
+            if (courseInstructorBLL.addCourseInstructor(ci)) {
+                // Xử lý khi phân công thành công
+                clearPC();
+                updatePCTable();
+                JOptionPane.showMessageDialog(null, "Thêm thành công");
+            } else {
+                JOptionPane.showMessageDialog(null, "Thêm thất bại");
+            }
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_Instructor_add_btnMouseClicked
+
+    private void Instructor_CbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Instructor_CbbActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Instructor_CbbActionPerformed
+
+    private void Online_update_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Online_update_btnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Online_update_btnMouseClicked
+
+    private void Instructor_updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Instructor_updateMouseClicked
+        // TODO add your handling code here:
+        int i = Instructor_table.getSelectedRow();
+
+        if (i == -1) {
+            JOptionPane.showMessageDialog(null, "Hãy chọn lịch phân công");
+        } else {
+            int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn cập nhật lịch không?",
+                    "Xác nhận ", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                CourseInstructor ci = new CourseInstructor();
+                ci.setInstructor(new Person());
+                String oldCourseTitle = Instructor_table.getModel().getValueAt(i, 1).toString();
+                int oldPersonID = Integer.parseInt(Instructor_table.getModel().getValueAt(i, 2).toString());
+                ci.setCourseID(0);
+                ci.getInstructor().setFirstname("");
+                ci.getInstructor().setLastname("");
+                String selectedCourse = (String) Course_title_Cbb.getSelectedItem();
+                String selectedInstructor = (String) Instructor_Cbb.getSelectedItem();
+                int personID = getIdFromString2(selectedInstructor);
+                String Title = extractTitle(selectedCourse);
+                ci.setTitle(Title);
+                ci.getInstructor().setPersonID(personID);
+                try {
+                    if (courseInstructorBLL.updateCourseInstructor(ci, oldPersonID, oldCourseTitle)) {
+                        JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                        clearPC();
+                        updatePCTable();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cập nhật thất bại ");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
+    }//GEN-LAST:event_Instructor_updateMouseClicked
+
+    private void instructor_deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_instructor_deleteMouseClicked
+        // TODO add your handling code here:
+        int i = Instructor_table.getSelectedRow();
+        if (i == -1) {
+            JOptionPane.showMessageDialog(null, "Hãy chọn course cần xóa");
+        } else {
+            int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa phân công này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                String selectedCourse = (String) Course_title_Cbb.getSelectedItem();
+                String selectedInstructor = (String) Instructor_Cbb.getSelectedItem();
+                String CourseTitle = extractTitle(selectedCourse);
+
+                // Lấy danh sách CourseInstructor từ BLL
+                List<CourseInstructor> courseInstructors = courseInstructorBLL.getAllCourseInstructor();
+
+                // Tìm PersonID tương ứng với giảng viên đã chọn
+                int personID = findPersonID(courseInstructors, selectedInstructor);
+
+                // Gọi hàm xóa từ BLL
+                try {
+                    if (courseInstructorBLL.deleteCourseInstructor(personID, CourseTitle)) {
+                        JOptionPane.showMessageDialog(null, "Xóa thành công");
+                        String search = Search3.getText();
+                        clearPC();
+                        updatePCTable();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Xóa thất bại");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace(); // In stack trace để kiểm tra lỗi trong Console
+                    JOptionPane.showMessageDialog(null, "Xóa thất bại: " + ex.getMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_instructor_deleteMouseClicked
+
+    private void CourseInstructor_search_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CourseInstructor_search_btnMouseClicked
+        // TODO add your handling code here:
+        updatePCTable();
     }//GEN-LAST:event_CourseInstructor_search_btnMouseClicked
 
-    private void PC_NextPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PC_NextPageMouseClicked
-        int page = Integer.parseInt(PC_Page.getText());
-        if (page < totalPage) {
-            page = page + 1;
-            PC_Page.setText(page + "");
-        } else {
-        }
-    }//GEN-LAST:event_PC_NextPageMouseClicked
-
     private void PC_PreviousPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PC_PreviousPageMouseClicked
+        // TODO add your handling code here:
         int page = Integer.parseInt(PC_Page.getText());
         if (page > 1) {
             page = page - 1;
@@ -1569,8 +1831,97 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_PC_PreviousPageMouseClicked
 
+    private void PC_NextPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PC_NextPageMouseClicked
+        // TODO add your handling code here:
+        int page = Integer.parseInt(PC_Page.getText());
+        if (page < totalPage) {
+            page = page + 1;
+            PC_Page.setText(page + "");
+        } else {
+        }
+    }//GEN-LAST:event_PC_NextPageMouseClicked
+
+    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton18ActionPerformed
+
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton19ActionPerformed
+
+    private void Search2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Search2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Search2ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton16ActionPerformed
+    
+    private void updatePCTable(){
+        String search = Search3.getText();
+                        if(search.isBlank() || search.isEmpty() || search==null){
+                            List<CourseInstructor> updatedList = courseInstructorBLL.getListCourseInstructor(1);  // Thay thế bằng phương thức lấy danh sách từ BLL của bạn
+                            totalPage = courseInstructorBLL.getListCourseInstructorCount();
+                            PC_Pagination.setText(" / " + totalPage);
+                            PC_Page.setText("1");
+                            loadDataPC(updatedList);
+                        }
+                        else{
+                            List<CourseInstructor> updatedList = courseInstructorBLL.getCourseInstructorWithInfo(search, 1);
+                            totalPage = courseInstructorBLL.getCourseInstructorWithInfoCount(search);
+                            PC_Pagination.setText(" / " + totalPage);
+                            PC_Page.setText("1");
+                            loadDataPC(updatedList);
+                        }
+    }
+    private int getIdFromString2(String nameID) {
+        String[] parts = nameID.split("ID:");
+        //System.out.println("Debug - nameID: " + nameID); // Thêm dòng này để xem giá trị của nameID
+
+        if (parts.length == 2) {
+            try {
+                return Integer.parseInt(parts[1].trim());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return -1;
+    }
+
+    private void setIcons() {
+        Label_QLKH_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/education.png")));
+        Label_QLPC_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/speech.png")));
+        Label_QLKQ_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/exam.png")));
+        Online_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        Onsite_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        KQ_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+    }
+
+    public static String extractTitle(String fullTitle) {
+
+        // Tách title từ chuỗi theo dấu gạch ngang và loại bỏ khoảng trắng
+        String[] parts = fullTitle.split(" - ");
+        if (parts.length >= 1) {
+            return parts[0];
+        } else {
+            return null;  // Trả về null nếu không tìm thấy phần title
+        }
+    }
+
+    private int findPersonID(List<CourseInstructor> courseInstructors, String selectedInstructor) {
+        for (CourseInstructor ci : courseInstructors) {
+            String instructorName = ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname();
+            if (instructorName.equals(selectedInstructor)) {
+                return ci.getInstructor().getPersonID();
+            }
+        }
+        return -1; // Trả về giá trị không hợp lệ nếu không tìm thấy
+    }
+
     private String getIdFromString(String nameID) {
         String[] parts = nameID.split(":\\s*");
+
         if (parts.length == 2) {
             return parts[1];
         }
@@ -1585,12 +1936,14 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void fillData() {
+
         List<Department> dpl = departmentBLL.getDepartmentList();
         for (Department dp : dpl) {
             String name = dp.getName();
             Department_Cbb1.addItem(name);
             Department_Cbb2.addItem(name);
         }
+
         List<Course> list = courseBLL.getAllCourse();
         for (Course c : list) {
             String course = c.getTitle() + " - ID: " + c.getCourseID();
@@ -1598,6 +1951,15 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    private void clearPC(){
+        Instructor_add_btn.setEnabled(true);
+        Course_title_Cbb.setEnabled(true);
+        Course_title_Cbb.setSelectedIndex(0);
+        Instructor_Cbb.setEnabled(false);
+        Instructor_Cbb.removeAllItems();
+        Instructor_Cbb.addItem("Select instructor");
+    }
+    
     private void fillInstructor(CourseInstructor ci) {
         List<Person> person = personBLL.getPersonNotInstructorOfCourse(ci.getCourseID());
         Instructor_Cbb.removeAllItems();
@@ -1610,6 +1972,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void loadDataKH(List<Course> courses, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
+
         for (Course c : courses) {
             if (c instanceof CourseOnline) {
                 CourseOnline online = (CourseOnline) c;
@@ -1626,22 +1989,33 @@ public class MainFrame extends javax.swing.JFrame {
     private void loadDataPC(List<CourseInstructor> list) {
         DefaultTableModel model = (DefaultTableModel) Instructor_table.getModel();
         model.setRowCount(0);
+
         for (CourseInstructor ci : list) {
             Object[] data = {ci.getCourseID(), ci.getTitle(), ci.getInstructor().getPersonID(), ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname()};
             model.addRow(data);
         }
+        int rowCount = model.getRowCount();
+        // Nếu có ít nhất một dòng mới được thêm
+        if (model.getRowCount() > rowCount) {
+            // Chọn dòng cuối cùng (dòng mới thêm)
+            int rowIndex = model.getRowCount() - 1;
+            Instructor_table.setRowSelectionInterval(rowIndex, rowIndex);
+
+            // Cuộn đến dòng được chọn
+            Instructor_table.scrollRectToVisible(Instructor_table.getCellRect(rowIndex, 0, true));
+        }
     }
 
     private void getKHDataFromRow(JTable table) {
+        int selectedRow = table.getSelectedRow();
+
         if (QLKH.getSelectedIndex() == 0) {
-            int selectedRow = table.getSelectedRow();
             Course_id1.setText(table.getValueAt(selectedRow, 0) + "");
             Online_title_tf.setText((String) table.getValueAt(selectedRow, 1));
             Online_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
             Department_Cbb1.setSelectedItem((String) table.getValueAt(selectedRow, 3));
             url_tf.setText((String) table.getValueAt(selectedRow, 4));
         } else {
-            int selectedRow = table.getSelectedRow();
             Onsite_courseID.setText(table.getValueAt(selectedRow, 0) + "");
             Onsite_title_tf.setText((String) table.getValueAt(selectedRow, 1));
             Onsite_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
@@ -1654,18 +2028,23 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void getPCDataFromRow(JTable table) {
         int selectedRow = table.getSelectedRow();
-        CourseInstructor ci = courseInstructorBLL.getCourseInstructorByID((int) table.getValueAt(selectedRow, 0));
+        CourseInstructor ci = courseInstructorBLL.getCourseInstructorByIDs((int) table.getValueAt(selectedRow, 0), (int) table.getValueAt(selectedRow, 2));
         String nameID = table.getValueAt(selectedRow, 1) + " - ID: " + table.getValueAt(selectedRow, 0);
+
         Course_title_Cbb.setSelectedItem(nameID);
         Course_title_Cbb.setEnabled(false);
+
         Course_id.setText(table.getValueAt(selectedRow, 0) + "");
+
         Instructor_id.setText(table.getValueAt(selectedRow, 2) + "");
+
         fillInstructor(ci);
+
         Instructor_Cbb.setSelectedItem(table.getValueAt(selectedRow, 3));
         Instructor_Cbb.setEnabled(true);
     }
 
-    private void ChangePage() {
+    private void ChangePageKH() {
         Online_page.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -1696,7 +2075,6 @@ public class MainFrame extends javax.swing.JFrame {
 
             }
 
-            @Override
             public void insertUpdate(DocumentEvent e) {
                 int page = Integer.parseInt(Onsite_page.getText());
                 PageKH(page);
@@ -1725,11 +2103,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void PageKH(int page) {
         if (QLKH.getSelectedIndex() == 0) {
             List<Course> course;
-            String search = Online_search.getText();
-            if (search == null || search.isEmpty() || search.isBlank()) {
+            if (Online_search.getText() == null || Online_search.getText().isEmpty() || Online_search.getText().isBlank()) {
                 course = courseOnlineBLL.getAllOnlineCourse(page);
                 totalPage = courseOnlineBLL.getAllOnlineCourseTotalPage();
             } else {
+                String search = Online_search.getText();
                 course = courseOnlineBLL.getCourseWithInfo(search, page);
                 totalPage = courseOnlineBLL.getCourseWithInfoTotalPage(search);
             }
@@ -1737,12 +2115,14 @@ public class MainFrame extends javax.swing.JFrame {
             loadDataKH(course, OnlineCourse_table);
         } else {
             List<Course> course;
-            String search = Onsite_search.getText();
-            if (search == null || search.isEmpty() || search.isBlank()) {
+            if (Onsite_search.getText() == null || Onsite_search.getText().isEmpty() || Onsite_search.getText().isBlank()) {
                 course = courseOnsiteBLL.getAllOnsiteCourse(page);
+
                 totalPage = courseOnsiteBLL.getAllOnsiteCourseTotalPage();
+
                 System.out.println(totalPage);
             } else {
+                String search = Onsite_search.getText();
                 course = courseOnsiteBLL.getCourseWithInfo(search, page);
                 totalPage = courseOnsiteBLL.getCourseWithInfoTotalPage(search);
                 System.out.println(totalPage);
@@ -1795,11 +2175,13 @@ public class MainFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new MainFrame().setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new MainFrame().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -1818,6 +2200,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton Instructor_add_btn;
     private javax.swing.JLabel Instructor_id;
     private javax.swing.JTable Instructor_table;
+    private javax.swing.JButton Instructor_update;
+    private javax.swing.JButton KQ_search_btn;
     private javax.swing.JLabel Label_QLKH;
     private javax.swing.JLabel Label_QLKH_icon;
     private javax.swing.JLabel Label_QLKQ;
@@ -1861,6 +2245,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField PC_Page;
     private javax.swing.JLabel PC_Pagination;
     private javax.swing.JButton PC_PreviousPage;
+    private javax.swing.JButton PC_clear_btn;
     private javax.swing.JPanel Panel_QLKH;
     private javax.swing.JPanel Panel_QLKQ;
     private javax.swing.JPanel Panel_QLPC;
@@ -1873,17 +2258,27 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel days;
     private javax.swing.JTextField days_tf;
     private javax.swing.JLabel department;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton14;
+    private javax.swing.JButton instructor_delete;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton19;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1893,7 +2288,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTable jTable3;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel location;
     private javax.swing.JTextField location_tf;
     private javax.swing.JLabel time;

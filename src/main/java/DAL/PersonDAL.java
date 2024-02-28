@@ -66,11 +66,14 @@ public class PersonDAL extends MyDatabaseConnection {
         
         try{
             String query = """
-                           SELECT p.*
-                           FROM person p
-                           JOIN courseInstructor ci ON p.PersonID = ci.personID
-                           WHERE (ci.courseID <> ? OR ci.courseID IS NULL)
-                           AND p.HireDate IS NOT NULL;""";
+                           SELECT *
+                           FROM Person a
+                           WHERE a.PersonID NOT IN (
+                               SELECT p.PersonID
+                               FROM Person p
+                               JOIN courseInstructor ci ON p.PersonID = ci.PersonID
+                               WHERE ci.CourseID = ?
+                           ) AND a.HireDate IS NOT NULL;""";
             
             p = PersonDAL.connectDB().prepareStatement(query);
             
