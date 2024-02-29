@@ -37,4 +37,8 @@ public class StudentGradeBLL {
     public void deleteStudentGrade(int enrollmentID){
         sgDAL.deleteStudent(enrollmentID);
     }
+    
+    public ArrayList<StudentGrade> selectedCourse(String title){
+        return sgDAL.selectCourse(title);
+    }
 }

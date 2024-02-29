@@ -95,4 +95,34 @@ public void editGrade(int enrollmentID, Float grade) {
             e.printStackTrace();
         }
     }
+    
+    public ArrayList<StudentGrade> selectCourse(String title){
+        ArrayList<StudentGrade> kq = new ArrayList<>();
+        try {
+            Connection conn = MyDatabaseConnection.connectDB();
+            String sql = "SELECT sg.EnrollmentID, sg.CourseID, c.Title, sg.StudentID, p.Firstname, p.Lastname, sg.Grade FROM studentgrade sg\n" +
+                            "JOIN course c ON sg.CourseID = c.CourseID\n" +
+                            "JOIN person p ON sg.StudentID = p.PersonID\n" +
+                            "WHERE c.Title = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, title);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                StudentGrade sg = new StudentGrade();
+                sg.setEnrollmentID(rs.getInt("EnrollmentID"));
+                sg.setCourseID(rs.getInt("CourseID"));
+                sg.setTitle(rs.getString("Title"));
+                sg.setStudentID(rs.getInt("StudentID"));
+                sg.setFirstName(rs.getString("Firstname"));
+                sg.setLastName(rs.getString("Lastname"));
+                sg.setGarde(rs.getFloat("Grade"));
+                kq.add(sg);
+            }
+            
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return kq;
+    }
 }

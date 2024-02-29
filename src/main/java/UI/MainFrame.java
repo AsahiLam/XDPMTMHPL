@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -135,6 +136,11 @@ public class MainFrame extends javax.swing.JFrame {
         for(StudentGrade sg: sgList){
             Object[] row = {sg.getEnrollmentID(), sg.getCourseID(), sg.getTitle(), sg.getStudentID(), sg.getFirstName(), sg.getLastName(), sg.getGarde()};
             model3.addRow(row);
+        }
+        
+        List<Course> cs = new CourseBLL().getAllCourse();
+        for (Course c : cs) {
+            cbSelectCourse3.addItem(c.getTitle());
         }
     }
 
@@ -1314,7 +1320,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        cbSelectCourse3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbSelectCourse3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selected Course" }));
         cbSelectCourse3.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbSelectCourse3ItemStateChanged(evt);
@@ -1938,21 +1944,39 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         // TODO add your handling code here:
+        int row = jTable3.getSelectedRow();
+        
         int id = -1;
-        for(int i = 0; i<model3.getRowCount();i++){
-            id =Integer.parseInt(model3.getValueAt(i, 0).toString());
-        }
+        id = Integer.parseInt(model3.getValueAt(row, 0).toString());
+        float grade = Float.parseFloat(model3.getValueAt(row, 6).toString());
             if(id != -1){
-                JOptionPane.showMessageDialog(null, "Deleted successful");
-                sgBLL.deleteStudentGrade(id);
+                if(grade != 0.0){
+                    JOptionPane.showMessageDialog(null, "Deleted successful");
+                    sgBLL.deleteStudentGrade(id);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Can't delete this student grade");
+                }
             }else{
                 JOptionPane.showMessageDialog(null, "The selected item does not exist");
             }
+            LoadStudentGradeTable();
     }//GEN-LAST:event_btnDeleteMouseClicked
 
     private void cbSelectCourse3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbSelectCourse3ItemStateChanged
         // TODO add your handling code here:
-        
+        model3.setRowCount(0);
+        String titleSG = null;
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            titleSG = (String) cbSelectCourse3.getSelectedItem();
+        }
+        ArrayList<StudentGrade> sgs = sgBLL.selectedCourse(titleSG);
+        for (StudentGrade sg : sgs) {
+            Object[] r = {sg.getEnrollmentID(), sg.getCourseID(), sg.getTitle(),sg.getStudentID(), sg.getFirstName(), sg.getLastName(), sg.getGarde()} ;
+            model3.addRow(r);
+        }
+        if(titleSG == "Selected Course"){
+            LoadStudentGradeTable();
+        }
     }//GEN-LAST:event_cbSelectCourse3ItemStateChanged
 
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
