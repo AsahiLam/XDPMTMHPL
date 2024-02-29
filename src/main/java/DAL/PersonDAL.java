@@ -42,18 +42,14 @@ public class PersonDAL extends MyDatabaseConnection {
             
             rs = p.executeQuery();
             
-            if(rs != null){
                 while(rs.next()){
                     person.setPersonID(PersonID);
                     person.setFirstname(rs.getString("Firstname"));
                     person.setLastname(rs.getString("Lastname"));
-                    person.setEnrollmentDate(Date.valueOf(rs.getString("EnrollmentDate").substring(0,10)));
-                    person.setHireDate(Date.valueOf(rs.getString("HireDate").substring(0,10)));
+                    person.setEnrollmentDate(rs.getDate("EnrollmentDate"));
+                    person.setHireDate(rs.getDate("HireDate"));
                 }
-            }
-            else{
-                return null;
-            }
+            
             connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);

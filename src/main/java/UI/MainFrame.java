@@ -6,6 +6,7 @@ import BLL.CourseOnSiteBLL;
 import BLL.CourseOnlineBLL;
 import BLL.DepartmentBLL;
 import BLL.PersonBLL;
+import BLL.StudentGradeBLL;
 import DAL.CourseDAL;
 import DAL.CourseInstructorDAL;
 import DAL.entities.Course;
@@ -14,6 +15,7 @@ import DAL.entities.CourseOnSite;
 import DAL.entities.CourseOnline;
 import DAL.entities.Department;
 import DAL.entities.Person;
+import DAL.entities.StudentGrade;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -21,7 +23,11 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,6 +63,10 @@ public class MainFrame extends javax.swing.JFrame {
     PersonBLL personBLL = new PersonBLL();
     private int mouseX, mouseY;
     private int totalPage;
+    
+//Quản lí kết quả khóa học   
+    private StudentGradeBLL sgBLL;
+    private DefaultTableModel model3;
 
     /**
      * Creates new form MainFrame
@@ -67,7 +77,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         cardLayout = (CardLayout) (Content.getLayout());
 
-        setIcons();
+//        setIcons();
 
         hiddenLabel();
 
@@ -111,6 +121,21 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         ChangePage();
+        
+        sgBLL = new StudentGradeBLL();
+        LoadStudentGradeTable();
+    }
+//Quản lí kết quả khóa học   
+    public void LoadStudentGradeTable(){
+        model3 = (DefaultTableModel) jTable3.getModel();
+        model3.setRowCount(0);
+        
+        ArrayList<StudentGrade> sgList = sgBLL.getSGs();
+        
+        for(StudentGrade sg: sgList){
+            Object[] row = {sg.getEnrollmentID(), sg.getCourseID(), sg.getTitle(), sg.getStudentID(), sg.getFirstName(), sg.getLastName(), sg.getGarde()};
+            model3.addRow(row);
+        }
     }
 
     /**
@@ -212,29 +237,29 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        txtName3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jButton15 = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
+        lbStudentID = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lbCourseID = new javax.swing.JLabel();
         jButton17 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        lbEnrollmentID = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jButton18 = new javax.swing.JButton();
+        lbTitle = new javax.swing.JLabel();
+        btnAdd = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jButton19 = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        Search2 = new javax.swing.JTextField();
+        txtSearch3 = new javax.swing.JTextField();
         KQ_search_btn = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        btnEdit = new javax.swing.JButton();
+        cbSelectCourse3 = new javax.swing.JComboBox<>();
+        txtGrade = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -1173,10 +1198,10 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(261, 261, 261)
                 .addComponent(jLabel6)
-                .addGap(219, 219, 219))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1188,39 +1213,42 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel13.setText("StudentID:");
 
-        jLabel10.setText("Label");
+        txtName3.setText("               ");
 
+        jTable3.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "EnrollmentID", "CourseID", "Title", "Credit", "Department", "StudentID", "Name", "Grade"
+                "EnrollmentID", "CourseID", "Title", "StudentID", "FirstName", "LastName", "Grade"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
+                false, false, false, false, false, false, true
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setMaxWidth(90);
+            jTable3.getColumnModel().getColumn(6).setMinWidth(120);
+        }
 
         jButton15.setText("<<");
 
-        jLabel12.setText("Label");
+        lbStudentID.setText("               ");
 
         jLabel14.setText("Grade:");
 
@@ -1230,43 +1258,43 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel11.setText("Name:");
 
-        jLabel5.setText("Label");
+        lbCourseID.setText("               ");
 
         jButton17.setText(">>");
 
-        jLabel3.setText("Label");
+        lbEnrollmentID.setText("               ");
 
         jLabel4.setText("CourseID:");
 
-        jLabel9.setText("Label");
+        lbTitle.setText("               ");
 
-        jButton18.setBackground(new java.awt.Color(236, 88, 88));
-        jButton18.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
-        jButton18.setForeground(new java.awt.Color(255, 227, 215));
-        jButton18.setText("Thêm");
-        jButton18.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton18ActionPerformed(evt);
+        btnAdd.setBackground(new java.awt.Color(236, 88, 88));
+        btnAdd.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 227, 215));
+        btnAdd.setText("Thêm");
+        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddMouseClicked(evt);
             }
         });
 
         jLabel8.setText("Title:");
 
-        jButton19.setBackground(new java.awt.Color(236, 88, 88));
-        jButton19.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
-        jButton19.setForeground(new java.awt.Color(255, 227, 215));
-        jButton19.setText("Xoá");
-        jButton19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton19ActionPerformed(evt);
+        btnDelete.setBackground(new java.awt.Color(236, 88, 88));
+        btnDelete.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 227, 215));
+        btnDelete.setText("Xoá");
+        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteMouseClicked(evt);
             }
         });
 
         jLabel7.setText("Pagination");
 
-        Search2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Search2ActionPerformed(evt);
+        txtSearch3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearch3KeyReleased(evt);
             }
         });
 
@@ -1276,19 +1304,22 @@ public class MainFrame extends javax.swing.JFrame {
         KQ_search_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         KQ_search_btn.setFocusPainted(false);
 
-        jButton16.setBackground(new java.awt.Color(236, 88, 88));
-        jButton16.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
-        jButton16.setForeground(new java.awt.Color(255, 227, 215));
-        jButton16.setText("Sửa");
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
+        btnEdit.setBackground(new java.awt.Color(236, 88, 88));
+        btnEdit.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 227, 215));
+        btnEdit.setText("Sửa");
+        btnEdit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditMouseClicked(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTextField1.setText("jTextField1");
+        cbSelectCourse3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbSelectCourse3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbSelectCourse3ItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout QLKQKHLayout = new javax.swing.GroupLayout(QLKQKH);
         QLKQKH.setLayout(QLKQKHLayout);
@@ -1297,63 +1328,62 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(QLKQKHLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
+                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(QLKQKHLayout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addGap(24, 24, 24)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(QLKQKHLayout.createSequentialGroup()
-                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(QLKQKHLayout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel12))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, QLKQKHLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel3))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, QLKQKHLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel5)))
-                        .addGap(52, 52, 52)
-                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel11))
+                                .addComponent(lbStudentID, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+                            .addGroup(QLKQKHLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(lbCourseID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(QLKQKHLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(lbEnrollmentID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(22, 22, 22)
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(47, 47, 47)
-                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                            .addComponent(txtName3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(QLKQKHLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(QLKQKHLayout.createSequentialGroup()
-                                .addComponent(jButton18)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton16)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton19))
-                            .addGroup(QLKQKHLayout.createSequentialGroup()
-                                .addComponent(Search2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(KQ_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(40, 40, 40))))
+                        .addComponent(txtGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(QLKQKHLayout.createSequentialGroup()
+                        .addComponent(btnAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEdit)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDelete))
+                    .addGroup(QLKQKHLayout.createSequentialGroup()
+                        .addComponent(txtSearch3, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(KQ_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbSelectCourse3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(40, 40, 40))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
                 .addContainerGap(19, Short.MAX_VALUE)
-                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
-                        .addComponent(jButton15)
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel7)
-                        .addGap(57, 57, 57)
-                        .addComponent(jButton17)
-                        .addGap(254, 254, 254))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+            .addGroup(QLKQKHLayout.createSequentialGroup()
+                .addGap(246, 246, 246)
+                .addComponent(jButton15)
+                .addGap(42, 42, 42)
+                .addComponent(jLabel7)
+                .addGap(57, 57, 57)
+                .addComponent(jButton17)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         QLKQKHLayout.setVerticalGroup(
             QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1365,37 +1395,37 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(Search2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSearch3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel2)
-                                .addComponent(jLabel3))
+                                .addComponent(lbEnrollmentID))
                             .addComponent(KQ_search_btn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel5)
+                                .addComponent(lbCourseID)
                                 .addComponent(jLabel4)
                                 .addComponent(jLabel8)
-                                .addComponent(jLabel9))
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lbTitle))
+                            .addComponent(cbSelectCourse3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(QLKQKHLayout.createSequentialGroup()
                                 .addGap(43, 43, 43)
                                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton18)
-                                    .addComponent(jButton16)
-                                    .addComponent(jButton19)))
+                                    .addComponent(btnAdd)
+                                    .addComponent(btnEdit)
+                                    .addComponent(btnDelete)))
                             .addGroup(QLKQKHLayout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel12)
+                                        .addComponent(lbStudentID)
                                         .addComponent(jLabel11)
-                                        .addComponent(jLabel10))
+                                        .addComponent(txtName3))
                                     .addComponent(jLabel13))
                                 .addGap(21, 21, 21)
                                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel14)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtGrade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addComponent(jSeparator5))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1840,31 +1870,111 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_PC_NextPageMouseClicked
 
-    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton18ActionPerformed
+        AddStudentGrade addStudentGrade = new AddStudentGrade();
+        addStudentGrade.setVisible(true);
+        addStudentGrade.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosed(WindowEvent e) {
+                LoadStudentGradeTable();
+    }});
+    }//GEN-LAST:event_btnAddMouseClicked
 
-    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+    private void txtSearch3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearch3KeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton19ActionPerformed
+        String keyword = txtSearch3.getText().toLowerCase();
+        if (!keyword.isEmpty()) {
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            model.setRowCount(0);
 
-    private void Search2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Search2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Search2ActionPerformed
+            ArrayList<StudentGrade> sgList = sgBLL.getSGs();
 
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+            for (StudentGrade sg : sgList) {
+                String enrollmentID = String.valueOf(sg.getEnrollmentID()).toLowerCase();
+                String courseID = String.valueOf(sg.getCourseID());
+                String title = sg.getTitle().toLowerCase();
+                String studentID = String.valueOf(sg.getStudentID());
+                String firstName = sg.getFirstName().toLowerCase();
+                String lastName = sg.getLastName().toLowerCase();
+                String grade = String.valueOf(sg.getGarde());
+
+                if (enrollmentID.contains(keyword) || courseID.contains(keyword) || title.contains(keyword) || studentID.contains(keyword) || firstName.contains(keyword) || lastName.contains(keyword) || grade.contains(keyword)) {
+                    Object[] row = {enrollmentID, courseID, title, studentID, firstName, lastName, grade};
+                    model.addRow(row);
+                }
+            }
+            } else {
+            LoadStudentGradeTable();
+        }
+    }//GEN-LAST:event_txtSearch3KeyReleased
+
+    private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton16ActionPerformed
+        try {
+                for (int i = 0; i < model3.getRowCount(); ++i) {
+                    int enrollmentID = Integer.parseInt(model3.getValueAt(i, 0).toString());
+                    float grade = 0.0f;
+                    try {
+                        grade = Float.parseFloat(model3.getValueAt(i, 6).toString());
+                    } catch (NumberFormatException ex) {
+                        // Xử lý nếu grade không phải là float
+                        JOptionPane.showMessageDialog(null, "Grade must be a float value!");
+                        continue;
+                    }
+                    if (grade >= 0.0 && grade <= 4.0) {
+                        sgBLL.editStudenGrade(enrollmentID, grade);
+                    } else {
+                        // Xử lý nếu grade không nằm trong khoảng từ 0.0 đến 4.0
+                        JOptionPane.showMessageDialog(null, "Grade is incorrect for enrollment ID: " + enrollmentID);
+                    }
+                }
+                JOptionPane.showMessageDialog(null, "Update successful!");
+                LoadStudentGradeTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnEditMouseClicked
+
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
+        // TODO add your handling code here:
+        int id = -1;
+        for(int i = 0; i<model3.getRowCount();i++){
+            id =Integer.parseInt(model3.getValueAt(i, 0).toString());
+        }
+            if(id != -1){
+                JOptionPane.showMessageDialog(null, "Deleted successful");
+                sgBLL.deleteStudentGrade(id);
+            }else{
+                JOptionPane.showMessageDialog(null, "The selected item does not exist");
+            }
+    }//GEN-LAST:event_btnDeleteMouseClicked
+
+    private void cbSelectCourse3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbSelectCourse3ItemStateChanged
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cbSelectCourse3ItemStateChanged
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        // TODO add your handling code here:
+       int row = jTable3.getSelectedRow();
+       lbEnrollmentID.setText(model3.getValueAt(row, 0).toString());
+       lbCourseID.setText(model3.getValueAt(row, 1).toString());
+       lbTitle.setText(model3.getValueAt(row, 2).toString());
+       lbStudentID.setText(model3.getValueAt(row, 3).toString());
+       txtName3.setText(model3.getValueAt(row, 4).toString()+" "+model3.getValueAt(row, 5));
+       txtGrade.setText(model3.getValueAt(row, 6).toString());
+    }//GEN-LAST:event_jTable3MouseClicked
  
 // Hàm setIcon cho các component    
     private void setIcons() {
-        Label_QLKH_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/education.png")));
-        Label_QLPC_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/speech.png")));
-        Label_QLKQ_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/exam.png")));
-        Online_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
-        Onsite_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
-        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
-        KQ_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        Label_QLKH_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/education.png")));
+        Label_QLPC_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/speech.png")));
+        Label_QLKQ_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/exam.png")));
+        Online_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
+        Onsite_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
+        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
+        KQ_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
     }
 
 // Ẩn các label
@@ -2322,33 +2432,27 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane QLKH;
     private javax.swing.JPanel QLKQKH;
     private javax.swing.JPanel QLPC;
-    private javax.swing.JTextField Search2;
     private javax.swing.JTextField Search3;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JComboBox<String> cbSelectCourse3;
     private javax.swing.JLabel credits;
     private javax.swing.JLabel days;
     private javax.swing.JTextField days_tf;
     private javax.swing.JLabel department;
     private javax.swing.JButton instructor_delete;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -2360,7 +2464,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbCourseID;
+    private javax.swing.JLabel lbEnrollmentID;
+    private javax.swing.JLabel lbStudentID;
+    private javax.swing.JLabel lbTitle;
     private javax.swing.JLabel location;
     private javax.swing.JTextField location_tf;
     private javax.swing.JLabel time;
@@ -2368,6 +2475,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel title;
     private javax.swing.JLabel title1;
     private javax.swing.JLabel title2;
+    private javax.swing.JTextField txtGrade;
+    private javax.swing.JLabel txtName3;
+    private javax.swing.JTextField txtSearch3;
     private javax.swing.JLabel url;
     private javax.swing.JTextField url_tf;
     // End of variables declaration//GEN-END:variables
