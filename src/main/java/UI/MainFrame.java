@@ -7,7 +7,6 @@ import BLL.CourseOnlineBLL;
 import BLL.DepartmentBLL;
 import BLL.PersonBLL;
 import BLL.StudentGradeBLL;
-import DAL.CourseDAL;
 import DAL.CourseInstructorDAL;
 import DAL.entities.Course;
 import DAL.entities.CourseInstructor;
@@ -16,28 +15,27 @@ import DAL.entities.CourseOnline;
 import DAL.entities.Department;
 import DAL.entities.Person;
 import DAL.entities.StudentGrade;
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -64,7 +62,7 @@ public class MainFrame extends javax.swing.JFrame {
     PersonBLL personBLL = new PersonBLL();
     private int mouseX, mouseY;
     private int totalPage;
-    
+
 //Quản lí kết quả khóa học   
     private StudentGradeBLL sgBLL;
     private DefaultTableModel model3;
@@ -79,7 +77,6 @@ public class MainFrame extends javax.swing.JFrame {
         cardLayout = (CardLayout) (Content.getLayout());
 
 //        setIcons();
-
         hiddenLabel();
 
         fillData();
@@ -87,6 +84,7 @@ public class MainFrame extends javax.swing.JFrame {
         OnlineCourse_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         OnsiteCourse_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         Instructor_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jTable3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         OnlineCourse_table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
@@ -121,27 +119,43 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jTable3.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+        jTable3.getActionMap().put("Enter", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                int selectedRow = jTable3.getSelectedRow();
+                int selectedColumn = jTable3.getSelectedColumn();
+                int rowCount = jTable3.getRowCount();
+
+                // Move to the next row in the same column
+                if (selectedRow < rowCount - 1) {
+                    jTable3.changeSelection(selectedRow + 1, selectedColumn, false, false);
+                    jTable3.editCellAt(selectedRow + 1, selectedColumn);
+                    Component editor = jTable3.getEditorComponent();
+                    if (editor != null) {
+                        editor.requestFocusInWindow();
+                    }
+                }
+                if(selectedRow == rowCount - 1){
+                    int currentPage = Integer.parseInt(KQKH_Page.getText());
+                    if (currentPage < totalPage) {
+                        KQKH_Page.setText(String.valueOf(currentPage + 1));
+                        jTable3.changeSelection(0, selectedColumn, false, false);
+                        jTable3.editCellAt(0, selectedColumn);
+                        Component editor = jTable3.getEditorComponent();
+                        if (editor != null) {
+                            editor.requestFocusInWindow();
+                        }
+                        // Thực hiện load dữ liệu cho trang mới ở đây
+                    }
+                }
+                
+            }
+        });
+
         ChangePage();
-        
-        sgBLL = new StudentGradeBLL();
-        LoadStudentGradeTable();
-    }
-//Quản lí kết quả khóa học   
-    public void LoadStudentGradeTable(){
-        model3 = (DefaultTableModel) jTable3.getModel();
-        model3.setRowCount(0);
-        
-        ArrayList<StudentGrade> sgList = sgBLL.getSGs();
-        
-        for(StudentGrade sg: sgList){
-            Object[] row = {sg.getEnrollmentID(), sg.getCourseID(), sg.getTitle(), sg.getStudentID(), sg.getFirstName(), sg.getLastName(), sg.getGarde()};
-            model3.addRow(row);
-        }
-        
-        List<Course> cs = new CourseBLL().getAllCourse();
-        for (Course c : cs) {
-            cbSelectCourse3.addItem(c.getTitle());
-        }
+
     }
 
     /**
@@ -260,12 +274,12 @@ public class MainFrame extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
+        KQKH_Pagination = new javax.swing.JLabel();
         txtSearch3 = new javax.swing.JTextField();
-        KQ_search_btn = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         cbSelectCourse3 = new javax.swing.JComboBox<>();
         txtGrade = new javax.swing.JTextField();
+        KQKH_Page = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -1253,6 +1267,11 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         jButton15.setText("<<");
+        jButton15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton15MouseClicked(evt);
+            }
+        });
 
         lbStudentID.setText("               ");
 
@@ -1267,6 +1286,11 @@ public class MainFrame extends javax.swing.JFrame {
         lbCourseID.setText("               ");
 
         jButton17.setText(">>");
+        jButton17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton17MouseClicked(evt);
+            }
+        });
 
         lbEnrollmentID.setText("               ");
 
@@ -1296,19 +1320,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Pagination");
+        KQKH_Pagination.setText("Pagination");
 
         txtSearch3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSearch3KeyReleased(evt);
             }
         });
-
-        KQ_search_btn.setBorder(null);
-        KQ_search_btn.setBorderPainted(false);
-        KQ_search_btn.setContentAreaFilled(false);
-        KQ_search_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        KQ_search_btn.setFocusPainted(false);
 
         btnEdit.setBackground(new java.awt.Color(236, 88, 88));
         btnEdit.setFont(new java.awt.Font("Menlo", 1, 14)); // NOI18N
@@ -1324,6 +1342,13 @@ public class MainFrame extends javax.swing.JFrame {
         cbSelectCourse3.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbSelectCourse3ItemStateChanged(evt);
+            }
+        });
+
+        KQKH_Page.setText("KQKH_Page");
+        KQKH_Page.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KQKH_PageActionPerformed(evt);
             }
         });
 
@@ -1368,15 +1393,12 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(QLKQKHLayout.createSequentialGroup()
                         .addComponent(btnAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                         .addComponent(btnEdit)
                         .addGap(18, 18, 18)
                         .addComponent(btnDelete))
-                    .addGroup(QLKQKHLayout.createSequentialGroup()
-                        .addComponent(txtSearch3, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(KQ_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cbSelectCourse3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cbSelectCourse3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtSearch3))
                 .addGap(40, 40, 40))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
                 .addContainerGap(19, Short.MAX_VALUE)
@@ -1385,9 +1407,11 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(QLKQKHLayout.createSequentialGroup()
                 .addGap(246, 246, 246)
                 .addComponent(jButton15)
-                .addGap(42, 42, 42)
-                .addComponent(jLabel7)
-                .addGap(57, 57, 57)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(KQKH_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(KQKH_Pagination)
+                .addGap(18, 18, 18)
                 .addComponent(jButton17)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1398,13 +1422,12 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(QLKQKHLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtSearch3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 2, Short.MAX_VALUE)
+                        .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2)
                                 .addComponent(lbEnrollmentID))
-                            .addComponent(KQ_search_btn))
+                            .addComponent(txtSearch3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1437,9 +1460,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(KQKH_Pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton15)
-                    .addComponent(jButton17))
+                    .addComponent(jButton17)
+                    .addComponent(KQKH_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
         );
 
@@ -1510,6 +1534,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void Panel_QLKQMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Panel_QLKQMouseClicked
         cardLayout.show(Content, "card3");
+        sgBLL = new StudentGradeBLL();
+//        LoadStudentGradeTable(1);
+//        KQKH_Page.setText("1");
+        KQKH_Page.setText("1");
+        PageKQKH(1);
         Panel_QLKH.setBackground(new Color(236, 88, 88));
         Panel_QLPC.setBackground(new Color(236, 88, 88));
         Panel_QLKQ.setBackground(new Color(255, 120, 108));
@@ -1880,63 +1909,48 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         AddStudentGrade addStudentGrade = new AddStudentGrade();
         addStudentGrade.setVisible(true);
-        addStudentGrade.addWindowListener(new WindowAdapter(){
+        addStudentGrade.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                LoadStudentGradeTable();
-    }});
+//                LoadStudentGradeTable(1);
+//                KQKH_Page.setText("1");
+                KQKH_Page.setText("1");
+                PageKQKH(1);
+                cbSelectCourse3.setSelectedItem("Selected Course");
+            }
+        });
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void txtSearch3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearch3KeyReleased
-        // TODO add your handling code here:
-        String keyword = txtSearch3.getText().toLowerCase();
-        if (!keyword.isEmpty()) {
-            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-            model.setRowCount(0);
 
-            ArrayList<StudentGrade> sgList = sgBLL.getSGs();
-
-            for (StudentGrade sg : sgList) {
-                String enrollmentID = String.valueOf(sg.getEnrollmentID()).toLowerCase();
-                String courseID = String.valueOf(sg.getCourseID());
-                String title = sg.getTitle().toLowerCase();
-                String studentID = String.valueOf(sg.getStudentID());
-                String firstName = sg.getFirstName().toLowerCase();
-                String lastName = sg.getLastName().toLowerCase();
-                String grade = String.valueOf(sg.getGarde());
-
-                if (enrollmentID.contains(keyword) || courseID.contains(keyword) || title.contains(keyword) || studentID.contains(keyword) || firstName.contains(keyword) || lastName.contains(keyword) || grade.contains(keyword)) {
-                    Object[] row = {enrollmentID, courseID, title, studentID, firstName, lastName, grade};
-                    model.addRow(row);
-                }
-            }
-            } else {
-            LoadStudentGradeTable();
-        }
+        PageKQKH(1);
+        KQKH_Page.setText("1");
     }//GEN-LAST:event_txtSearch3KeyReleased
 
     private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
         // TODO add your handling code here:
         try {
-                for (int i = 0; i < model3.getRowCount(); ++i) {
-                    int enrollmentID = Integer.parseInt(model3.getValueAt(i, 0).toString());
-                    float grade = 0.0f;
-                    try {
-                        grade = Float.parseFloat(model3.getValueAt(i, 6).toString());
-                    } catch (NumberFormatException ex) {
-                        // Xử lý nếu grade không phải là float
-                        JOptionPane.showMessageDialog(null, "Grade must be a float value!");
-                        continue;
-                    }
-                    if (grade >= 0.0 && grade <= 4.0) {
-                        sgBLL.editStudenGrade(enrollmentID, grade);
-                    } else {
-                        // Xử lý nếu grade không nằm trong khoảng từ 0.0 đến 4.0
-                        JOptionPane.showMessageDialog(null, "Grade is incorrect for enrollment ID: " + enrollmentID);
-                    }
+            for (int i = 0; i < model3.getRowCount(); ++i) {
+                int enrollmentID = Integer.parseInt(model3.getValueAt(i, 0).toString());
+                float grade = 0.0f;
+                try {
+                    grade = Float.parseFloat(model3.getValueAt(i, 6).toString());
+                } catch (NumberFormatException ex) {
+                    // Xử lý nếu grade không phải là float
+                    JOptionPane.showMessageDialog(null, "Grade must be a float value!");
+                    continue;
                 }
-                JOptionPane.showMessageDialog(null, "Update successful!");
-                LoadStudentGradeTable();
+                if (grade >= 0.0 && grade <= 4.0) {
+                    sgBLL.editStudenGrade(enrollmentID, grade);
+                    cbSelectCourse3.setSelectedItem("Selected Course");
+                } else {
+                    // Xử lý nếu grade không nằm trong khoảng từ 0.0 đến 4.0
+                    JOptionPane.showMessageDialog(null, "Grade is incorrect for enrollment ID: " + enrollmentID);
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Update successful!");
+            LoadStudentGradeTable(1);
+            KQKH_Page.setText("1");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1945,16 +1959,20 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         // TODO add your handling code here:
         int row = jTable3.getSelectedRow();
-        
+
         int id = -1;
         id = Integer.parseInt(model3.getValueAt(row, 0).toString());
-            if(id != -1){
-                JOptionPane.showMessageDialog(null, "Deleted successful");
-                sgBLL.deleteStudentGrade(id);
-            }else{
-                JOptionPane.showMessageDialog(null, "The selected item does not exist");
-            }
-            LoadStudentGradeTable();
+        if (id != -1) {
+            JOptionPane.showMessageDialog(null, "Deleted successful");
+            cbSelectCourse3.setSelectedItem("Selected Course");
+            sgBLL.deleteStudentGrade(id);
+        } else {
+            JOptionPane.showMessageDialog(null, "The selected item does not exist");
+        }
+//        LoadStudentGradeTable(1);
+//        KQKH_Page.setText("1");
+        KQKH_Page.setText("1");
+        PageKQKH(1);
     }//GEN-LAST:event_btnDeleteMouseClicked
 
     private void cbSelectCourse3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbSelectCourse3ItemStateChanged
@@ -1966,27 +1984,52 @@ public class MainFrame extends javax.swing.JFrame {
         }
         ArrayList<StudentGrade> sgs = sgBLL.selectedCourse(titleSG);
         for (StudentGrade sg : sgs) {
-            Object[] r = {sg.getEnrollmentID(), sg.getCourseID(), sg.getTitle(),sg.getStudentID(), sg.getFirstName(), sg.getLastName(), sg.getGarde()} ;
+            Object[] r = {sg.getEnrollmentID(), sg.getCourseID(), sg.getTitle(), sg.getStudentID(), sg.getFirstName(), sg.getLastName(), sg.getGarde()};
             model3.addRow(r);
         }
-        if(titleSG == "Selected Course"){
-            LoadStudentGradeTable();
+        if (titleSG == "Selected Course") {
+//            LoadStudentGradeTable(1);
+//            KQKH_Page.setText("1");
+            KQKH_Page.setText("1");
+            PageKQKH(1);
         }
     }//GEN-LAST:event_cbSelectCourse3ItemStateChanged
 
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
         // TODO add your handling code here:
-       int row = jTable3.getSelectedRow();
-       if(row != -1){
+        int row = jTable3.getSelectedRow();
+        if (row != -1) {
             lbEnrollmentID.setText(model3.getValueAt(row, 0).toString());
             lbCourseID.setText(model3.getValueAt(row, 1).toString());
             lbTitle.setText(model3.getValueAt(row, 2).toString());
             lbStudentID.setText(model3.getValueAt(row, 3).toString());
-            txtName3.setText(model3.getValueAt(row, 4).toString()+" "+model3.getValueAt(row, 5));
+            txtName3.setText(model3.getValueAt(row, 4).toString() + " " + model3.getValueAt(row, 5));
             txtGrade.setText(model3.getValueAt(row, 6).toString());
-       }
+        }
     }//GEN-LAST:event_jTable3MouseClicked
- 
+
+    private void jButton15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton15MouseClicked
+        int page = Integer.parseInt(KQKH_Page.getText());
+        if (page > 1) {
+            page = page - 1;
+            KQKH_Page.setText(page + "");
+        } else {
+        }
+    }//GEN-LAST:event_jButton15MouseClicked
+
+    private void jButton17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton17MouseClicked
+        int page = Integer.parseInt(KQKH_Page.getText());
+        if (page < totalPage) {
+            page = page + 1;
+            KQKH_Page.setText(page + "");
+        } else {
+        }
+    }//GEN-LAST:event_jButton17MouseClicked
+
+    private void KQKH_PageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KQKH_PageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_KQKH_PageActionPerformed
+
 // Hàm setIcon cho các component    
     private void setIcons() {
         Label_QLKH_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/education.png")));
@@ -1995,21 +2038,17 @@ public class MainFrame extends javax.swing.JFrame {
         Online_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
         Onsite_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
         CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
-        KQ_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
     }
 
 // Ẩn các label
-    
     private void hiddenLabel() {
         Course_id1.setVisible(false);
         Onsite_courseID.setVisible(false);
         Course_id.setVisible(false);
         Instructor_id.setVisible(false);
     }
-    
 
 // Hàm lấy id từ chuỗi trong combobox 
-    
     private int getIdFromString2(String nameID) {
         String[] parts = nameID.split("ID:");
         //System.out.println("Debug - nameID: " + nameID); // Thêm dòng này để xem giá trị của nameID
@@ -2025,7 +2064,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
 // Hàm lấy id từ chuỗi trong combobox    
-    
     private String getIdFromString(String nameID) {
         String[] parts = nameID.split(":\\s*");
 
@@ -2036,7 +2074,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
 // Hàm lấy title từ chuỗi trong combobox
-    
     public static String extractTitle(String fullTitle) {
 
         // Tách title từ chuỗi theo dấu gạch ngang và loại bỏ khoảng trắng
@@ -2047,7 +2084,7 @@ public class MainFrame extends javax.swing.JFrame {
             return null;  // Trả về null nếu không tìm thấy phần title
         }
     }
-    
+
 // Hàm cập nhật trang    
     private void ChangePage() {
         Online_page.getDocument().addDocumentListener(new DocumentListener() {
@@ -2103,14 +2140,32 @@ public class MainFrame extends javax.swing.JFrame {
                 PagePC(page);
             }
         });
+        KQKH_Page.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                int page = Integer.parseInt(KQKH_Page.getText());
+
+                PageKQKH(page);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                int page = Integer.parseInt(KQKH_Page.getText());
+
+                PageKQKH(page);
+            }
+        });
     }
-    
+
     //======================
     //  QUẢN LÝ KHOÁ HỌC 
     //======================
-
 // Hàm ghi dữ liệu vào combobox 
-    
     private void fillData() {
         List<Department> dpl = departmentBLL.getDepartmentList();
         for (Department dp : dpl) {
@@ -2125,9 +2180,8 @@ public class MainFrame extends javax.swing.JFrame {
             Course_title_Cbb.addItem(course);
         }
     }
-    
+
 // Hàm ghi dữ liệu lên table khoá học
-    
     private void loadDataKH(List<Course> courses, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -2146,7 +2200,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
 // Hàm lấy dữ liệu từ table khoá học 
-    
     private void getKHDataFromRow(JTable table) {
         int selectedRow = table.getSelectedRow();
 
@@ -2168,7 +2221,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
 // Hàm cập nhật trang quản lý khoá học 
-    
     private void PageKH(int page) {
         if (QLKH.getSelectedIndex() == 0) {
             List<Course> course;
@@ -2204,9 +2256,7 @@ public class MainFrame extends javax.swing.JFrame {
     //======================
     //  QUẢN LÝ PHÂN CÔNG
     //======================
-    
 // Hàm tìm Instructor
-    
     private int findPersonID(List<CourseInstructor> courseInstructors, String selectedInstructor) {
         for (CourseInstructor ci : courseInstructors) {
             String instructorName = ci.getInstructor().getLastname() + " " + ci.getInstructor().getFirstname();
@@ -2218,7 +2268,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
 // Hàm cập nhật Instructor combobox
-    
     private void fillInstructor(CourseInstructor ci) {
         List<Person> person = personBLL.getPersonNotInstructorOfCourse(ci.getCourseID());
         Instructor_Cbb.removeAllItems();
@@ -2229,7 +2278,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
 // Hàm ghi dữ liệu lên table phân công
-    
     private void loadDataPC(List<CourseInstructor> list) {
         DefaultTableModel model = (DefaultTableModel) Instructor_table.getModel();
         model.setRowCount(0);
@@ -2251,7 +2299,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
 // Hàm cập nhật dữ liệu table phân công    
-    
     private void updatePCTable() {
         String search = Search3.getText();
         if (search.isBlank() || search.isEmpty() || search == null) {
@@ -2268,9 +2315,8 @@ public class MainFrame extends javax.swing.JFrame {
             loadDataPC(updatedList);
         }
     }
- 
+
 // Hàm lấy dữ liệu từ dòng đã chọn trong table phân công 
-    
     private void getPCDataFromRow(JTable table) {
         int selectedRow = table.getSelectedRow();
         CourseInstructor ci = courseInstructorBLL.getCourseInstructorByIDs((int) table.getValueAt(selectedRow, 0), (int) table.getValueAt(selectedRow, 2));
@@ -2315,39 +2361,71 @@ public class MainFrame extends javax.swing.JFrame {
         loadDataPC(course);
     }
 
-  
-    
     //======================
     //  QUẢN LÝ KẾT QUẢ 
     //======================
-    
+//Quản lí kết quả khóa học   
+    public void LoadStudentGradeTable(int page) {
+        int numofrecords = 30;
 
-    
+        model3 = (DefaultTableModel) jTable3.getModel();
+        model3.setRowCount(0);
 
-    
+        ArrayList<StudentGrade> sgList = sgBLL.getSGs();
 
-    
+        int startIndex = (page - 1) * numofrecords;
+        int endIndex = Math.min(startIndex + numofrecords, sgList.size());
 
-    
+        for (int i = startIndex; i < endIndex; i++) {
+            StudentGrade sg = sgList.get(i);
+            Object[] row = {sg.getEnrollmentID(), sg.getCourseID(), sg.getTitle(), sg.getStudentID(), sg.getFirstName(), sg.getLastName(), sg.getGarde()};
+            model3.addRow(row);
+        }
 
-    
-    
+        totalPage = (int) Math.ceil((double) sgList.size() / numofrecords);
+        KQKH_Pagination.setText(" / " + totalPage);
 
-    
+        List<Course> cs = new CourseBLL().getAllCourse();
+        for (Course c : cs) {
+            cbSelectCourse3.addItem(c.getTitle());
+        }
+    }
 
-    
+// Hàm cập nhật trang cho quản lý phân công    
+    private void PageKQKH(int page) {
+        int numofrecords = 30;
+        String keyword = txtSearch3.getText().toLowerCase();
+        if (!keyword.isEmpty()) {
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            model.setRowCount(0);
 
-    
+            ArrayList<StudentGrade> sgList = sgBLL.getSGs();
+            int count = 0;
 
-    
+            for (StudentGrade sg : sgList) {
+                String enrollmentID = String.valueOf(sg.getEnrollmentID()).toLowerCase();
+                String courseID = String.valueOf(sg.getCourseID());
+                String title = sg.getTitle().toLowerCase();
+                String studentID = String.valueOf(sg.getStudentID());
+                String firstName = sg.getFirstName().toLowerCase();
+                String lastName = sg.getLastName().toLowerCase();
+                String grade = String.valueOf(sg.getGarde());
 
-    
-    
-    
+                if (enrollmentID.contains(keyword) || courseID.contains(keyword) || title.contains(keyword) || studentID.contains(keyword) || firstName.contains(keyword) || lastName.contains(keyword) || grade.contains(keyword)) {
+                    if (count >= (page - 1) * numofrecords && count < page * numofrecords) {
+                        Object[] row = {enrollmentID, courseID, title, studentID, firstName, lastName, grade};
+                        model.addRow(row);
+                    }
+                    count++;
+                }
+                totalPage = (int) Math.ceil((double) count / numofrecords);
+                KQKH_Pagination.setText(" / " + totalPage);
+            }
+        } else {
+            LoadStudentGradeTable(page);
+        }
+    }
 
-    
-
-    
     /**
      * @param args the command line arguments
      */
@@ -2402,7 +2480,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel Instructor_id;
     private javax.swing.JTable Instructor_table;
     private javax.swing.JButton Instructor_update;
-    private javax.swing.JButton KQ_search_btn;
+    private javax.swing.JTextField KQKH_Page;
+    private javax.swing.JLabel KQKH_Pagination;
     private javax.swing.JLabel Label_QLKH;
     private javax.swing.JLabel Label_QLKH_icon;
     private javax.swing.JLabel Label_QLKQ;
@@ -2472,7 +2551,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;

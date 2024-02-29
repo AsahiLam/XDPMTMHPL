@@ -1607,17 +1607,13 @@
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace pref="22" max="32767" attributes="0"/>
                                   <Component id="btnEdit" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="btnDelete" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="txtSearch3" min="-2" pref="218" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="KQ_search_btn" min="-2" pref="32" max="-2" attributes="0"/>
-                              </Group>
                               <Component id="cbSelectCourse3" alignment="1" max="32767" attributes="0"/>
+                              <Component id="txtSearch3" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
@@ -1629,9 +1625,11 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
                           <Component id="jButton15" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="KQKH_Page" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="KQKH_Pagination" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jButton17" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -1644,14 +1642,13 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
+                                  <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                          <Component id="txtSearch3" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="lbEnrollmentID" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="KQ_search_btn" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtSearch3" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -1696,9 +1693,10 @@
                           <Component id="jScrollPane3" min="-2" pref="422" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel7" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                              <Component id="KQKH_Pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                               <Component id="jButton15" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jButton17" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="KQKH_Page" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       </Group>
@@ -1833,6 +1831,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton15MouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lbStudentID">
                   <Properties>
@@ -1868,6 +1869,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton17MouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lbEnrollmentID">
                   <Properties>
@@ -1923,7 +1927,7 @@
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnDeleteMouseClicked"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel7">
+                <Component class="javax.swing.JLabel" name="KQKH_Pagination">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Pagination"/>
                   </Properties>
@@ -1935,19 +1939,6 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="Online_search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(236, 88, 88)));"/>
                   </AuxValues>
-                </Component>
-                <Component class="javax.swing.JButton" name="KQ_search_btn">
-                  <Properties>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="null"/>
-                    </Property>
-                    <Property name="borderPainted" type="boolean" value="false"/>
-                    <Property name="contentAreaFilled" type="boolean" value="false"/>
-                    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                      <Color id="Hand Cursor"/>
-                    </Property>
-                    <Property name="focusPainted" type="boolean" value="false"/>
-                  </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnEdit">
                   <Properties>
@@ -1982,6 +1973,14 @@
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtGrade">
+                </Component>
+                <Component class="javax.swing.JTextField" name="KQKH_Page">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="KQKH_Page"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="KQKH_PageActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
