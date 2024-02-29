@@ -85,7 +85,7 @@ public void editGrade(int enrollmentID, Float grade) {
     public void deleteStudent(int enrollmentID){
         try {
             Connection conn = MyDatabaseConnection.connectDB();
-            String sql = "DELETE FROM studentgrade WHERE EnrollmentID = ?";
+            String sql = "UPDATE studentgrade SET Grade = NULL WHERE EnrollmentID = ?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1, enrollmentID);
             pst.executeUpdate();

@@ -1948,14 +1948,9 @@ public class MainFrame extends javax.swing.JFrame {
         
         int id = -1;
         id = Integer.parseInt(model3.getValueAt(row, 0).toString());
-        float grade = Float.parseFloat(model3.getValueAt(row, 6).toString());
             if(id != -1){
-                if(grade != 0.0){
-                    JOptionPane.showMessageDialog(null, "Deleted successful");
-                    sgBLL.deleteStudentGrade(id);
-                }else{
-                    JOptionPane.showMessageDialog(null, "Can't delete this student grade");
-                }
+                JOptionPane.showMessageDialog(null, "Deleted successful");
+                sgBLL.deleteStudentGrade(id);
             }else{
                 JOptionPane.showMessageDialog(null, "The selected item does not exist");
             }
@@ -1982,12 +1977,14 @@ public class MainFrame extends javax.swing.JFrame {
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
         // TODO add your handling code here:
        int row = jTable3.getSelectedRow();
-       lbEnrollmentID.setText(model3.getValueAt(row, 0).toString());
-       lbCourseID.setText(model3.getValueAt(row, 1).toString());
-       lbTitle.setText(model3.getValueAt(row, 2).toString());
-       lbStudentID.setText(model3.getValueAt(row, 3).toString());
-       txtName3.setText(model3.getValueAt(row, 4).toString()+" "+model3.getValueAt(row, 5));
-       txtGrade.setText(model3.getValueAt(row, 6).toString());
+       if(row != -1){
+            lbEnrollmentID.setText(model3.getValueAt(row, 0).toString());
+            lbCourseID.setText(model3.getValueAt(row, 1).toString());
+            lbTitle.setText(model3.getValueAt(row, 2).toString());
+            lbStudentID.setText(model3.getValueAt(row, 3).toString());
+            txtName3.setText(model3.getValueAt(row, 4).toString()+" "+model3.getValueAt(row, 5));
+            txtGrade.setText(model3.getValueAt(row, 6).toString());
+       }
     }//GEN-LAST:event_jTable3MouseClicked
  
 // Hàm setIcon cho các component    

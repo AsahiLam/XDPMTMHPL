@@ -176,9 +176,10 @@ public class AddStudentGrade extends javax.swing.JFrame {
         try {
             String s = txtStudentID.getText();
             if(!s.isEmpty()&&s.matches("\\d+")){
-                StudentID = Integer.parseInt(s);
-                Person p = new PersonBLL().getPersonById(StudentID);
-                if(p.getHireDate() == null){
+                int id = Integer.parseInt(s);
+                Person p = new PersonBLL().getPersonById(id);
+                if(p.getHireDate()== null){
+                    StudentID = id;
                     txtName.setText(p.getFirstname()+" "+p.getLastname());           
                 }else{
                     txtName.setText(" ");
@@ -193,6 +194,7 @@ public class AddStudentGrade extends javax.swing.JFrame {
         // TODO add your handling code here:
         ArrayList<StudentGrade> list = new StudentGradeBLL().getSGs();
         enrollmentID = list.size() + 1;
+        System.out.println(enrollmentID+" "+StudentID+" "+courseID);
         for (StudentGrade sg : list) {
             if(StudentID == sg.getCourseID() && courseID == sg.getCourseID()){
                 JOptionPane.showMessageDialog(null, "This student has the grade");
