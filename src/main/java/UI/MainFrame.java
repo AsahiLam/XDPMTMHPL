@@ -76,7 +76,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         cardLayout = (CardLayout) (Content.getLayout());
 
-//        setIcons();
+        setIcons();
         hiddenLabel();
 
         fillData();
