@@ -7,7 +7,7 @@ package BLL;
 import DAL.CourseOnlineDAL;
 import DAL.entities.Course;
 import DAL.entities.CourseOnline;
-import java.sql.SQLException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 
 /**
@@ -35,7 +35,7 @@ public class CourseOnlineBLL {
     }
 
     public int getAllOnlineCourseTotalPage() {
-        
+
         return (int) Math.ceil((double) courseOnlineDAL.getListOnlineCount() / numofrecords);
     }
 
@@ -45,19 +45,25 @@ public class CourseOnlineBLL {
         int from, to;
         from = (page - 1) * numofrecords;
         to = page * numofrecords;
-        
-        return course.subList(from, Math.min(to,size));
+
+        return course.subList(from, Math.min(to, size));
     }
 
     public int getCourseWithInfoTotalPage(String info) {
         return (int) Math.ceil((double) courseOnlineDAL.getCoursesWithInfoCount(info) / numofrecords);
     }
-    
+
     public CourseOnline getCourseOnlineByID(int CourseID) {
         CourseOnline course = courseOnlineDAL.getCourseOnlineByID(CourseID);
         return course;
     }
-    
-    
+
+    public List<SimpleEntry<String, Integer>> statistic_OnlineCourse_StudentCount() {
+        return courseOnlineDAL.getStatistic_Amount_Student();
+    }
+
+    public List<SimpleEntry<String, Integer>> statistic_OnlineCourse_InstructorCount() {
+        return courseOnlineDAL.getStatistic_Amount_Instructor();
+    }
 
 }

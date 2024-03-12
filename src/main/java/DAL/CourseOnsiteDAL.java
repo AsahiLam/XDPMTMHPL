@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -189,5 +190,72 @@ public class CourseOnsiteDAL extends MyDatabaseConnection {
         return course;
     }
     
+     public List<AbstractMap.SimpleEntry<String, Integer>> getStatistic_Amount_Student() {
+        List list = new ArrayList();
+        try {
+            connection = MyDatabaseConnection.connectDB();
+
+            String query = """
+                           SELECT 
+                               C.Title,
+                               COUNT(g.StudentID) AS StudentCount
+                           FROM 
+                               OnsiteCourse CO
+                           JOIN 
+                               Course C ON CO.CourseID = C.CourseID
+                           LEFT JOIN 
+                               StudentGrade g ON g.CourseID = C.CourseID
+                           GROUP BY 
+                               CO.CourseID, C.Title;""";
+
+            p = connection.prepareStatement(query);
+
+            rs = p.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    list.add(new AbstractMap.SimpleEntry(rs.getString("Title"), rs.getInt("StudentCount")));
+                }
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
+
+    public List<AbstractMap.SimpleEntry<String, Integer>> getStatistic_Amount_Instructor() {
+        List list = new ArrayList();
+        try {
+            connection = MyDatabaseConnection.connectDB();
+
+            String query = """
+                           SELECT 
+                               C.Title,
+                               COUNT(CI.PersonID) AS InstructorCount
+                           FROM 
+                               OnsiteCourse CO
+                           JOIN 
+                               Course C ON CO.CourseID = C.CourseID
+                           LEFT JOIN 
+                               CourseInstructor CI ON CO.CourseID = CI.CourseID
+                           GROUP BY 
+                               CO.CourseID, C.Title;""";
+
+            p = connection.prepareStatement(query);
+
+            rs = p.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    list.add(new AbstractMap.SimpleEntry(rs.getString("Title"), rs.getInt("InstructorCount")));
+                }
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
     
 }

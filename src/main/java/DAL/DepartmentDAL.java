@@ -26,17 +26,18 @@ public class DepartmentDAL extends MyDatabaseConnection {
     ResultSet rs = null;
 
     public DepartmentDAL() {
-        connection = MyDatabaseConnection.connectDB();
+        
     }
 
     public Department getDepartMent(int DepartmentID) {
         Department dp = new Department();
 
         try {
+            connection = MyDatabaseConnection.connectDB();
 
             String query = "SELECT * FROM Department WHERE Department.DepartmentID = ?";
 
-            p = DepartmentDAL.connectDB().prepareStatement(query);
+            p = connection.prepareStatement(query);
 
             p.setInt(1, DepartmentID);
 
@@ -51,7 +52,7 @@ public class DepartmentDAL extends MyDatabaseConnection {
                     dp.setAdmintrator(rs.getInt("Administrator"));
                 }
             }
-            CourseOnlineDAL.connectDB().close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -63,9 +64,11 @@ public class DepartmentDAL extends MyDatabaseConnection {
         List<Department> dpl = new ArrayList<>();
 
         try {
+            connection = MyDatabaseConnection.connectDB();
+            
             String query = "SELECT * FROM Department";
 
-            p = DepartmentDAL.connectDB().prepareStatement(query);
+            p = connection.prepareStatement(query);
 
             rs = p.executeQuery();
 
@@ -80,7 +83,7 @@ public class DepartmentDAL extends MyDatabaseConnection {
                     dpl.add(dp);
                 }
             }
-            CourseOnlineDAL.connectDB().close();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
         }

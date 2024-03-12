@@ -16,6 +16,7 @@ DAL/CourseDAL.class
 UI/MainFrame$5.class
 DAL/StudentGradeDAL.class
 UI/MainFrame$11.class
+UI/Statistic_OnlineCourse$1.class
 UI/MainFrame$31.class
 UI/MainFrame$8.class
 UI/MainFrame$51.class
@@ -33,13 +34,17 @@ UI/MainFrame$65.class
 UI/MainFrame$7.class
 UI/MainFrame$35.class
 UI/MainFrame$12.class
+UI/Statistic_OnlineCourse.class
 UI/MainFrame$25.class
+UI/Statistic_OnsiteCourse.class
+UI/Statistic_StudentGrade.class
 UI/MainFrame$13.class
 BLL/CourseOnlineBLL.class
 UI/MainFrame$53.class
 UI/MainFrame.class
 DAL/CourseOnsiteDAL.class
 UI/MainFrame$48.class
+UI/Statistic_Instructor.class
 UI/MainFrame$36.class
 UI/MainFrame$64.class
 BLL/PersonBLL.class
@@ -47,7 +52,7 @@ DAL/DepartmentDAL.class
 UI/MainFrame$41.class
 BLL/CourseInstructorBLL.class
 UI/AddStudentGrade$2.class
-UI/MainFrame$70.class
+UI/Statistic_OnsiteCourse$1.class
 UI/MainFrame$60.class
 UI/MainFrame$9.class
 UI/MainFrame$6.class
@@ -78,7 +83,6 @@ UI/MainFrame$32.class
 UI/MainFrame$62.class
 UI/MainFrame$29.class
 UI/MainFrame$39.class
-UI/MainFrame$69.class
 UI/MainFrame$55.class
 DAL/entities/CourseOnline.class
 UI/MainFrame$45.class
@@ -86,7 +90,6 @@ BLL/DepartmentBLL.class
 UI/MainFrame$15.class
 UI/MainFrame$22.class
 UI/MainFrame$33.class
-UI/MainFrame$68.class
 UI/MainFrame$28.class
 DAL/entities/Person.class
 BLL/CourseOnSiteBLL.class

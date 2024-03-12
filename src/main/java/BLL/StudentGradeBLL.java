@@ -6,39 +6,45 @@ package BLL;
 
 import DAL.StudentGradeDAL;
 import DAL.entities.StudentGrade;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Tính
  */
 public class StudentGradeBLL {
+
     private StudentGradeDAL sgDAL;
-    
-    public StudentGradeBLL(){
+
+    public StudentGradeBLL() {
         sgDAL = new StudentGradeDAL();
     }
-    
-    public ArrayList<StudentGrade> getSGs(){
+
+    public ArrayList<StudentGrade> getSGs() {
         ArrayList<StudentGrade> list = new ArrayList<>();
         list = sgDAL.getAll();
-        
         return list;
     }
-    
-    public void addStudentGrade(int enrollmentID, int studentID, int courseID){
+
+    public void addStudentGrade(int enrollmentID, int studentID, int courseID) {
         sgDAL.addStudent(enrollmentID, studentID, courseID);
     }
-    
-    public void editStudenGrade(int enrollmentID, float grade){
+
+    public void editStudenGrade(int enrollmentID, float grade) {
         sgDAL.editGrade(enrollmentID, grade);
     }
-    
-    public void deleteStudentGrade(int enrollmentID){
+
+    public void deleteStudentGrade(int enrollmentID) {
         sgDAL.deleteStudent(enrollmentID);
     }
-    
-    public ArrayList<StudentGrade> selectedCourse(String title){
+
+    public ArrayList<StudentGrade> selectedCourse(String title) {
         return sgDAL.selectCourse(title);
+    }
+
+    public List<SimpleEntry<Double, Integer>> statistic_StudentGrade(int courseID) {
+        return sgDAL.statistic_StudentGrade(courseID);
     }
 }

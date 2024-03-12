@@ -1,6 +1,6 @@
 package DAL;
 
-import DAL.MyDatabaseConnection;
+
 import DAL.entities.Person;
 import java.sql.Connection;
 import java.sql.Date;
@@ -27,16 +27,20 @@ public class PersonDAL extends MyDatabaseConnection {
     ResultSet rs = null;
 
     public PersonDAL() {
-        connection = PersonDAL.connectDB();
+       
     }
-
+    
+    
     public Person getPersonByID(int PersonID) {
         Person person = new Person();
 
         try {
+            
+            connection = MyDatabaseConnection.connectDB();
+            
             String query = "SELECT * FROM Person Where PersonID = ?";
             
-            p = PersonDAL.connectDB().prepareStatement(query);
+            p = connection.prepareStatement(query);
             
             p.setInt(1, PersonID);
             
@@ -61,6 +65,8 @@ public class PersonDAL extends MyDatabaseConnection {
         List<Person> list = new ArrayList<>();
         
         try{
+            connection = MyDatabaseConnection.connectDB();
+            
             String query = """
                            SELECT *
                            FROM Person a
@@ -71,7 +77,7 @@ public class PersonDAL extends MyDatabaseConnection {
                                WHERE ci.CourseID = ?
                            ) AND a.HireDate IS NOT NULL;""";
             
-            p = PersonDAL.connectDB().prepareStatement(query);
+            p = connection.prepareStatement(query);
             
             p.setInt(1, CourseID);
             
@@ -90,6 +96,7 @@ public class PersonDAL extends MyDatabaseConnection {
             }else{
                 return null;
             }
+            connection.close();
         }catch (SQLException ex) {
                 Logger.getLogger(PersonDAL.class.getName()).log(Level.SEVERE, null, ex);
             }

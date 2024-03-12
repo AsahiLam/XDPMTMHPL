@@ -7,7 +7,7 @@ package BLL;
 import DAL.CourseOnsiteDAL;
 import DAL.entities.Course;
 import DAL.entities.CourseOnSite;
-import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.List;
 
 /**
@@ -58,5 +58,13 @@ public class CourseOnSiteBLL {
     public CourseOnSite getCourseOnsiteByID(int courseID) {
         CourseOnSite course = courseOnsiteDAL.getCourseOnsiteByID(courseID);
         return course;
+    }
+    
+    public List<AbstractMap.SimpleEntry<String,Integer>> statistic_OnlineCourse_StudentCount(){
+        return courseOnsiteDAL.getStatistic_Amount_Student();             
+    }
+    
+    public List<AbstractMap.SimpleEntry<String,Integer>> statistic_OnlineCourse_InstructorCount(){
+        return courseOnsiteDAL.getStatistic_Amount_Instructor();             
     }
 }

@@ -66,7 +66,7 @@
               <Component id="LeftMenu" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
                   <Component id="CloseBtn" min="-2" pref="47" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="Content" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -361,54 +361,6 @@
                               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="jScrollPane4" max="32767" attributes="0"/>
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Group type="102" attributes="0">
-                                                      <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Component id="department" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                          <Component id="credits" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                          <Component id="title" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                          <Component id="url" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                                      <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Component id="Online_title_tf" max="32767" attributes="0"/>
-                                                          <Component id="Online_credits_tf" alignment="0" max="32767" attributes="0"/>
-                                                          <Component id="Department_Cbb1" alignment="0" pref="300" max="32767" attributes="0"/>
-                                                          <Component id="url_tf" alignment="0" max="32767" attributes="0"/>
-                                                      </Group>
-                                                  </Group>
-                                                  <Component id="Course_id1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                              <Component id="jSeparator2" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="1" attributes="0">
-                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                      <Group type="102" alignment="1" attributes="0">
-                                                          <Component id="Online_add_btn" min="-2" pref="115" max="-2" attributes="0"/>
-                                                          <EmptySpace max="32767" attributes="0"/>
-                                                          <Component id="Online_update_btn" min="-2" pref="116" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="Online_search" min="-2" pref="218" max="-2" attributes="0"/>
-                                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                          <Component id="Online_search_btn" min="-2" pref="32" max="-2" attributes="0"/>
-                                                      </Group>
-                                                  </Group>
-                                                  <Group type="102" attributes="0">
-                                                      <Component id="Online_delete_btn" min="-2" pref="116" max="-2" attributes="0"/>
-                                                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                                                      <Component id="Online_clear_btn" min="-2" pref="116" max="-2" attributes="0"/>
-                                                  </Group>
-                                              </Group>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
                                       <Component id="Online_previousPage" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="Online_page" min="-2" pref="47" max="-2" attributes="0"/>
@@ -417,8 +369,56 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="Online_nextPage" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="Statistic_Online" min="-2" pref="44" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jScrollPane4" alignment="1" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="department" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="credits" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="title" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="url" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="Online_title_tf" max="32767" attributes="0"/>
+                                                  <Component id="Online_credits_tf" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="Department_Cbb1" alignment="0" pref="302" max="32767" attributes="0"/>
+                                                  <Component id="url_tf" alignment="0" max="32767" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="Course_id1" min="-2" pref="41" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Component id="jSeparator2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="Online_add_btn" min="-2" pref="115" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Component id="Online_update_btn" min="-2" pref="116" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="Online_search" min="-2" pref="218" max="-2" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Component id="Online_search_btn" min="-2" pref="32" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" attributes="0">
+                                              <Component id="Online_delete_btn" min="-2" pref="116" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                              <Component id="Online_clear_btn" min="-2" pref="116" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
                                   </Group>
                               </Group>
+                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -474,7 +474,7 @@
                                               </Group>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="37" max="32767" attributes="0"/>
+                                      <EmptySpace pref="45" max="32767" attributes="0"/>
                                       <Component id="Course_id1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jSeparator2" min="-2" pref="169" max="-2" attributes="0"/>
@@ -482,13 +482,16 @@
                               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="jScrollPane4" min="-2" pref="339" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="Online_pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                                  <Component id="Online_nextPage" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="Online_previousPage" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="Online_page" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="Statistic_Online" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="Online_pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                                      <Component id="Online_nextPage" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Online_previousPage" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Online_page" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace pref="18" max="32767" attributes="0"/>
+                              <EmptySpace pref="26" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -549,9 +552,6 @@
                       </SubComponents>
                     </Container>
                     <Component class="javax.swing.JTextField" name="Online_search">
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Online_searchActionPerformed"/>
-                      </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="Online_search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(236, 88, 88)));"/>
                       </AuxValues>
@@ -570,7 +570,6 @@
                       </Properties>
                       <Events>
                         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Online_search_btnMouseClicked"/>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Online_search_btnActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="Online_previousPage">
@@ -579,7 +578,6 @@
                       </Properties>
                       <Events>
                         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Online_previousPageMouseClicked"/>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Online_previousPageActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="Online_pagination">
@@ -731,6 +729,16 @@
                     </Component>
                     <Component class="javax.swing.JTextField" name="Online_page">
                     </Component>
+                    <Component class="javax.swing.JButton" name="Statistic_Online">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="58" green="58" red="ec" type="rgb"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Statistic_OnlineMouseClicked"/>
+                      </Events>
+                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="OnsiteCourse">
@@ -754,54 +762,6 @@
                               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="jScrollPane5" max="32767" attributes="0"/>
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="Onsite_department" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="Onsite_credits" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="Onsite_title" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="location" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="days" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="time" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                                  <Component id="days_tf" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="location_tf" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="Department_Cbb2" alignment="0" pref="300" max="32767" attributes="0"/>
-                                                  <Component id="Onsite_credits_tf" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="Onsite_title_tf" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="time_tf" max="32767" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                              <Component id="jSeparator3" max="32767" attributes="0"/>
-                                              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="Onsite_add_btn" min="-2" pref="115" max="-2" attributes="0"/>
-                                                          <EmptySpace max="32767" attributes="0"/>
-                                                          <Component id="Onsite_update_btn" min="-2" pref="116" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="Onsite_search" min="-2" pref="218" max="-2" attributes="0"/>
-                                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                          <Component id="Onsite_search_btn" min="-2" pref="32" max="-2" attributes="0"/>
-                                                      </Group>
-                                                  </Group>
-                                                  <Group type="102" alignment="1" attributes="0">
-                                                      <Component id="Onsite_delete_btn" min="-2" pref="116" max="-2" attributes="0"/>
-                                                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                                                      <Component id="Onsite_clear_btn" min="-2" pref="116" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <Component id="Onsite_courseID" alignment="1" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
                                       <Component id="Onsite_previousPage" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="Onsite_page" min="-2" pref="45" max="-2" attributes="0"/>
@@ -810,8 +770,53 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="Onsite_nextPage" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="Statistic_Onsite" min="-2" pref="49" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jScrollPane5" alignment="1" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="Onsite_department" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="Onsite_credits" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="Onsite_title" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="location" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="days" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="time" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="days_tf" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="location_tf" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="Department_Cbb2" alignment="0" pref="300" max="32767" attributes="0"/>
+                                          <Component id="Onsite_credits_tf" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="Onsite_title_tf" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="jSpinner1" min="-2" pref="160" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                                      <Component id="jSeparator3" pref="5" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="Onsite_add_btn" min="-2" pref="115" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Component id="Onsite_update_btn" min="-2" pref="116" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="Onsite_search" min="-2" pref="218" max="-2" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Component id="Onsite_search_btn" min="-2" pref="32" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="Onsite_delete_btn" min="-2" pref="116" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                              <Component id="Onsite_clear_btn" min="-2" pref="116" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="Onsite_courseID" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
+                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -853,7 +858,7 @@
                                                   <Component id="Onsite_delete_btn" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                                                   <Component id="Onsite_clear_btn" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                                               </Group>
-                                              <EmptySpace max="32767" attributes="0"/>
+                                              <EmptySpace pref="68" max="32767" attributes="0"/>
                                               <Component id="Onsite_courseID" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                                           </Group>
@@ -873,10 +878,10 @@
                                                   <Component id="days" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   <Component id="days_tf" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                                               </Group>
-                                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="3" attributes="0">
                                                   <Component id="time" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="time_tf" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                                  <Component id="jSpinner1" alignment="3" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -886,16 +891,19 @@
                                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="10" max="32767" attributes="0"/>
+                              <EmptySpace pref="17" max="32767" attributes="0"/>
                               <Component id="jScrollPane5" min="-2" pref="339" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="Onsite_pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                                  <Component id="Onsite_nextPage" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="Onsite_previousPage" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="Onsite_page" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="Onsite_pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                                      <Component id="Onsite_nextPage" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Onsite_previousPage" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Onsite_page" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="Statistic_Onsite" min="-2" pref="25" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="11" max="32767" attributes="0"/>
+                              <EmptySpace pref="18" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1147,8 +1155,6 @@
                         <Property name="text" type="java.lang.String" value="Time:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="time_tf">
-                    </Component>
                     <Component class="javax.swing.JComboBox" name="Department_Cbb2">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -1168,6 +1174,23 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="Onsite_page">
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="jSpinner1">
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(sm)"/>
+                        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Date datetime = new Date();&#xa;&#xa;SpinnerDateModel sm = new SpinnerDateModel(datetime, null, null, Calendar.HOUR_OF_DAY);"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1, &quot;HH:mm:ss&quot;);&#xa;&#xa;jSpinner1.setEditor(de);"/>
+                      </AuxValues>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="Statistic_Onsite">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="58" green="58" red="ec" type="rgb"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Statistic_OnsiteMouseClicked"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1191,14 +1214,14 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jScrollPane2" min="-2" pref="811" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="title1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="title2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="Course_title_Cbb" min="-2" pref="279" max="-2" attributes="0"/>
                                               <Component id="Instructor_Cbb" min="-2" pref="279" max="-2" attributes="0"/>
@@ -1206,9 +1229,11 @@
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="Course_id" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                           <Component id="Instructor_id" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                      <Component id="title2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="title1" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="jSeparator4" min="-2" pref="28" max="-2" attributes="0"/>
@@ -1233,77 +1258,87 @@
                                   <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="PC_PreviousPage" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="PC_Page" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                                          <Component id="PC_Pagination" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="PC_NextPage" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="jScrollPane2" alignment="0" min="-2" pref="811" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="PC_PreviousPage" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="PC_Page" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                                  <Component id="PC_Pagination" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="PC_NextPage" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="449" max="-2" attributes="0"/>
+                                  <Component id="Statistic_Instructor" min="-2" pref="49" max="-2" attributes="0"/>
                                   <EmptySpace pref="27" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
+                      <Component id="jPanel4" alignment="1" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
+                          <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="Search3" max="32767" attributes="0"/>
-                                      <Component id="CourseInstructor_search_btn" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="Instructor_add_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                                      <Component id="Instructor_update" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="instructor_delete" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                                      <Component id="PC_clear_btn" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="title1" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="Course_title_Cbb" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="title2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="Instructor_Cbb" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="title2" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Instructor_Cbb" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="Course_id" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="Instructor_id" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="instructor_delete" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                                              <Component id="PC_clear_btn" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="Course_id" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="Instructor_id" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                                  <Component id="jSeparator4" min="-2" pref="164" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="CourseInstructor_search_btn" min="-2" pref="23" max="-2" attributes="0"/>
+                                              <Component id="Search3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="Instructor_add_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                                              <Component id="Instructor_update" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Component id="jSeparator4" min="-2" pref="156" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <Component id="jScrollPane2" min="-2" pref="402" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" pref="440" max="32767" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="PC_PreviousPage" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="PC_Pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                              <Component id="PC_NextPage" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="PC_Page" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="PC_PreviousPage" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="PC_Pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Component id="PC_NextPage" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="PC_Page" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="Statistic_Instructor" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1372,13 +1407,9 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="instructor_deleteMouseClicked"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="instructor_deleteActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="Search3">
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Search3ActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="Online_search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(236, 88, 88)));"/>
                   </AuxValues>
@@ -1427,7 +1458,6 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Instructor_updateMouseClicked"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Instructor_updateActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="PC_NextPage">
@@ -1453,7 +1483,6 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Instructor_add_btnMouseClicked"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Instructor_add_btnActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JSeparator" name="jSeparator4">
@@ -1543,6 +1572,60 @@
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
+                <Component class="javax.swing.JButton" name="Statistic_Instructor">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="58" green="58" red="ec" type="rgb"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Statistic_InstructorMouseClicked"/>
+                  </Events>
+                </Component>
+                <Container class="javax.swing.JPanel" name="jPanel4">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="98" green="be" red="ff" type="rgb"/>
+                    </Property>
+                  </Properties>
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="337" max="-2" attributes="0"/>
+                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel7" min="-2" pref="44" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JLabel" name="jLabel7">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Menlo" size="18" style="1"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="d7" green="e3" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="QU&#x1ea2;N L&#xdd; PH&#xc2;N C&#xd4;NG"/>
+                      </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jLabel7.setHorizontalAlignment(SwingConstants.CENTER);"/>
+                      </AuxValues>
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="QLKQKH">
@@ -1618,20 +1701,25 @@
                           <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="19" max="32767" attributes="0"/>
-                          <Component id="jScrollPane3" min="-2" pref="822" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
+                                  <Component id="jButton15" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="KQKH_Page" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="KQKH_Pagination" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="jButton17" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="Statistic_StudentGrade" min="-2" pref="49" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane3" min="-2" pref="822" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
-                          <Component id="jButton15" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="KQKH_Page" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="KQKH_Pagination" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jButton17" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1642,7 +1730,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1692,11 +1780,14 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jScrollPane3" min="-2" pref="422" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="KQKH_Pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                              <Component id="jButton15" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton17" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="KQKH_Page" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="KQKH_Pagination" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Component id="jButton15" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jButton17" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="KQKH_Page" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="Statistic_StudentGrade" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       </Group>
@@ -1714,19 +1805,19 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="261" max="-2" attributes="0"/>
-                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="275" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabel6" min="-2" pref="44" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel6" min="-2" pref="44" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1742,6 +1833,9 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="QU&#x1ea2;N L&#xdd; K&#x1ebe;T QU&#x1ea2; KHO&#xc1; H&#x1ecc;C"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jLabel6.setHorizontalAlignment(SwingConstants.CENTER);"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1980,6 +2074,16 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="KQKH_PageActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="Statistic_StudentGrade">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="58" green="58" red="ec" type="rgb"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Statistic_StudentGradeMouseClicked"/>
                   </Events>
                 </Component>
               </SubComponents>

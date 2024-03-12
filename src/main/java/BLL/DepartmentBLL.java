@@ -24,8 +24,8 @@ public class DepartmentBLL {
         Department d = departmentDAL.getDepartMent(DepartmentID);
         return d;
     }
-    
-    public List<Department> getDepartmentList(){
+
+    public List<Department> getDepartmentList() {
         List<Department> dpl = departmentDAL.getDepartmentList();
         return dpl;
     }

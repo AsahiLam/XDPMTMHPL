@@ -13,14 +13,15 @@ import java.util.List;
  * @author lamquoc
  */
 public class PersonBLL {
+
     PersonDAL personDAL = new PersonDAL();
-    
-    public Person getPersonById(int PersonID){
+
+    public Person getPersonById(int PersonID) {
         return personDAL.getPersonByID(PersonID);
     }
-    
-    public List<Person> getPersonNotInstructorOfCourse(int CourseID){
+
+    public List<Person> getPersonNotInstructorOfCourse(int CourseID) {
         return personDAL.getPersonNotInstructorOfCourse(CourseID);
     }
-    
+
 }

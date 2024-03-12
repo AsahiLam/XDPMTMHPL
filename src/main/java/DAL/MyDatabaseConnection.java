@@ -1,6 +1,5 @@
 package DAL;
 
-import static com.mysql.cj.protocol.x.XProtocolDecoder.instance;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

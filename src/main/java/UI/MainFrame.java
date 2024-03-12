@@ -18,15 +18,18 @@ import DAL.entities.StudentGrade;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.KeyboardFocusManager;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,9 +37,12 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -137,7 +143,7 @@ public class MainFrame extends javax.swing.JFrame {
                         editor.requestFocusInWindow();
                     }
                 }
-                if(selectedRow == rowCount - 1){
+                if (selectedRow == rowCount - 1) {
                     int currentPage = Integer.parseInt(KQKH_Page.getText());
                     if (currentPage < totalPage) {
                         KQKH_Page.setText(String.valueOf(currentPage + 1));
@@ -150,7 +156,7 @@ public class MainFrame extends javax.swing.JFrame {
                         // Thực hiện load dữ liệu cho trang mới ở đây
                     }
                 }
-                
+
             }
         });
 
@@ -206,6 +212,7 @@ public class MainFrame extends javax.swing.JFrame {
         Department_Cbb1 = new javax.swing.JComboBox<>();
         Course_id1 = new javax.swing.JLabel();
         Online_page = new javax.swing.JTextField();
+        Statistic_Online = new javax.swing.JButton();
         OnsiteCourse = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         OnsiteCourse_table = new javax.swing.JTable();
@@ -229,10 +236,14 @@ public class MainFrame extends javax.swing.JFrame {
         days = new javax.swing.JLabel();
         days_tf = new javax.swing.JTextField();
         time = new javax.swing.JLabel();
-        time_tf = new javax.swing.JTextField();
         Department_Cbb2 = new javax.swing.JComboBox<>();
         Onsite_courseID = new javax.swing.JLabel();
         Onsite_page = new javax.swing.JTextField();
+        Date datetime = new Date();
+
+        SpinnerDateModel sm = new SpinnerDateModel(datetime, null, null, Calendar.HOUR_OF_DAY);
+        jSpinner1 = new javax.swing.JSpinner(sm);
+        Statistic_Onsite = new javax.swing.JButton();
         QLPC = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Instructor_table = new javax.swing.JTable();
@@ -253,6 +264,9 @@ public class MainFrame extends javax.swing.JFrame {
         Instructor_Cbb = new javax.swing.JComboBox<>();
         Course_id = new javax.swing.JLabel();
         Instructor_id = new javax.swing.JLabel();
+        Statistic_Instructor = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
         QLKQKH = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -280,6 +294,7 @@ public class MainFrame extends javax.swing.JFrame {
         cbSelectCourse3 = new javax.swing.JComboBox<>();
         txtGrade = new javax.swing.JTextField();
         KQKH_Page = new javax.swing.JTextField();
+        Statistic_StudentGrade = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -455,12 +470,6 @@ public class MainFrame extends javax.swing.JFrame {
             OnlineCourse_table.getColumnModel().getColumn(4).setHeaderValue("URL");
         }
 
-        Online_search.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Online_searchActionPerformed(evt);
-            }
-        });
-
         Online_search_btn.setBorder(null);
         Online_search_btn.setBorderPainted(false);
         Online_search_btn.setContentAreaFilled(false);
@@ -471,21 +480,11 @@ public class MainFrame extends javax.swing.JFrame {
                 Online_search_btnMouseClicked(evt);
             }
         });
-        Online_search_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Online_search_btnActionPerformed(evt);
-            }
-        });
 
         Online_previousPage.setText("<<");
         Online_previousPage.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Online_previousPageMouseClicked(evt);
-            }
-        });
-        Online_previousPage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Online_previousPageActionPerformed(evt);
             }
         });
 
@@ -573,6 +572,13 @@ public class MainFrame extends javax.swing.JFrame {
         Course_id1.setText("Id");
         Course_id1.setEnabled(false);
 
+        Statistic_Online.setBackground(new java.awt.Color(236, 88, 88));
+        Statistic_Online.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Statistic_OnlineMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout OnlineCourseLayout = new javax.swing.GroupLayout(OnlineCourse);
         OnlineCourse.setLayout(OnlineCourseLayout);
         OnlineCourseLayout.setHorizontalGroup(
@@ -581,42 +587,6 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(OnlineCourseLayout.createSequentialGroup()
-                        .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane4)
-                            .addGroup(OnlineCourseLayout.createSequentialGroup()
-                                .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(OnlineCourseLayout.createSequentialGroup()
-                                        .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(department)
-                                            .addComponent(credits)
-                                            .addComponent(title)
-                                            .addComponent(url))
-                                        .addGap(30, 30, 30)
-                                        .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(Online_title_tf)
-                                            .addComponent(Online_credits_tf)
-                                            .addComponent(Department_Cbb1, 0, 300, Short.MAX_VALUE)
-                                            .addComponent(url_tf)))
-                                    .addComponent(Course_id1))
-                                .addGap(54, 54, 54)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(52, 52, 52)
-                                .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OnlineCourseLayout.createSequentialGroup()
-                                            .addComponent(Online_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(Online_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(OnlineCourseLayout.createSequentialGroup()
-                                            .addComponent(Online_search, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(Online_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(OnlineCourseLayout.createSequentialGroup()
-                                        .addComponent(Online_delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(31, 31, 31)
-                                        .addComponent(Online_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(38, 38, 38))
-                    .addGroup(OnlineCourseLayout.createSequentialGroup()
                         .addComponent(Online_previousPage)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Online_page, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -624,7 +594,44 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(Online_pagination)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Online_nextPage)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Statistic_Online, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OnlineCourseLayout.createSequentialGroup()
+                        .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(OnlineCourseLayout.createSequentialGroup()
+                                .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(department)
+                                    .addComponent(credits)
+                                    .addComponent(title)
+                                    .addComponent(url))
+                                .addGap(30, 30, 30)
+                                .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Online_title_tf)
+                                    .addComponent(Online_credits_tf)
+                                    .addComponent(Department_Cbb1, 0, 302, Short.MAX_VALUE)
+                                    .addComponent(url_tf))
+                                .addGap(54, 54, 54))
+                            .addGroup(OnlineCourseLayout.createSequentialGroup()
+                                .addComponent(Course_id1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OnlineCourseLayout.createSequentialGroup()
+                                    .addComponent(Online_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(Online_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(OnlineCourseLayout.createSequentialGroup()
+                                    .addComponent(Online_search, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(Online_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(OnlineCourseLayout.createSequentialGroup()
+                                .addComponent(Online_delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(Online_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(38, 38, 38))
         );
         OnlineCourseLayout.setVerticalGroup(
             OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -665,18 +672,20 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(url)
                                     .addComponent(url_tf, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                         .addComponent(Course_id1))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Online_pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Online_nextPage)
-                    .addComponent(Online_previousPage)
-                    .addComponent(Online_page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Statistic_Online, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(OnlineCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Online_pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Online_nextPage)
+                        .addComponent(Online_previousPage)
+                        .addComponent(Online_page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         Online_search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(236, 88, 88)));
@@ -827,6 +836,17 @@ public class MainFrame extends javax.swing.JFrame {
         Onsite_courseID.setText("jLabel2");
         Onsite_courseID.setEnabled(false);
 
+        JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1, "HH:mm:ss");
+
+        jSpinner1.setEditor(de);
+
+        Statistic_Onsite.setBackground(new java.awt.Color(236, 88, 88));
+        Statistic_Onsite.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Statistic_OnsiteMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout OnsiteCourseLayout = new javax.swing.GroupLayout(OnsiteCourse);
         OnsiteCourse.setLayout(OnsiteCourseLayout);
         OnsiteCourseLayout.setHorizontalGroup(
@@ -835,44 +855,6 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(OnsiteCourseLayout.createSequentialGroup()
-                        .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane5)
-                            .addGroup(OnsiteCourseLayout.createSequentialGroup()
-                                .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Onsite_department)
-                                    .addComponent(Onsite_credits)
-                                    .addComponent(Onsite_title)
-                                    .addComponent(location)
-                                    .addComponent(days)
-                                    .addComponent(time))
-                                .addGap(30, 30, 30)
-                                .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(days_tf, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(location_tf, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Department_Cbb2, javax.swing.GroupLayout.Alignment.LEADING, 0, 300, Short.MAX_VALUE)
-                                    .addComponent(Onsite_credits_tf, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Onsite_title_tf, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(time_tf))
-                                .addGap(54, 54, 54)
-                                .addComponent(jSeparator3)
-                                .addGap(52, 52, 52)
-                                .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(OnsiteCourseLayout.createSequentialGroup()
-                                            .addComponent(Onsite_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(Onsite_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(OnsiteCourseLayout.createSequentialGroup()
-                                            .addComponent(Onsite_search, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(Onsite_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OnsiteCourseLayout.createSequentialGroup()
-                                        .addComponent(Onsite_delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(31, 31, 31)
-                                        .addComponent(Onsite_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(Onsite_courseID, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addGap(38, 38, 38))
-                    .addGroup(OnsiteCourseLayout.createSequentialGroup()
                         .addComponent(Onsite_previousPage)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Onsite_page, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -880,7 +862,44 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(Onsite_pagination)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Onsite_nextPage)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Statistic_Onsite, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, OnsiteCourseLayout.createSequentialGroup()
+                        .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Onsite_department)
+                            .addComponent(Onsite_credits)
+                            .addComponent(Onsite_title)
+                            .addComponent(location)
+                            .addComponent(days)
+                            .addComponent(time))
+                        .addGap(30, 30, 30)
+                        .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(days_tf, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(location_tf, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Department_Cbb2, javax.swing.GroupLayout.Alignment.LEADING, 0, 300, Short.MAX_VALUE)
+                            .addComponent(Onsite_credits_tf, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Onsite_title_tf, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(54, 54, 54)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.DEFAULT_SIZE, 5, Short.MAX_VALUE)
+                        .addGap(52, 52, 52)
+                        .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(OnsiteCourseLayout.createSequentialGroup()
+                                    .addComponent(Onsite_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(Onsite_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(OnsiteCourseLayout.createSequentialGroup()
+                                    .addComponent(Onsite_search, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(Onsite_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(OnsiteCourseLayout.createSequentialGroup()
+                                .addComponent(Onsite_delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(Onsite_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Onsite_courseID))))
+                .addGap(38, 38, 38))
         );
         OnsiteCourseLayout.setVerticalGroup(
             OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -912,7 +931,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(Onsite_delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Onsite_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                                 .addComponent(Onsite_courseID)
                                 .addGap(12, 12, 12))
                             .addGroup(OnsiteCourseLayout.createSequentialGroup()
@@ -928,22 +947,24 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(days)
                                     .addComponent(days_tf, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(16, 16, 16)
+                                .addGap(17, 17, 17)
                                 .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(time)
-                                    .addComponent(time_tf, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(OnsiteCourseLayout.createSequentialGroup()
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Onsite_pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Onsite_nextPage)
-                    .addComponent(Onsite_previousPage)
-                    .addComponent(Onsite_page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(OnsiteCourseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Onsite_pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Onsite_nextPage)
+                        .addComponent(Onsite_previousPage)
+                        .addComponent(Onsite_page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Statistic_Onsite, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         Online_search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(236, 88, 88)));
@@ -988,17 +1009,6 @@ public class MainFrame extends javax.swing.JFrame {
                 instructor_deleteMouseClicked(evt);
             }
         });
-        instructor_delete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                instructor_deleteActionPerformed(evt);
-            }
-        });
-
-        Search3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Search3ActionPerformed(evt);
-            }
-        });
 
         CourseInstructor_search_btn.setBorder(null);
         CourseInstructor_search_btn.setBorderPainted(false);
@@ -1029,11 +1039,6 @@ public class MainFrame extends javax.swing.JFrame {
                 Instructor_updateMouseClicked(evt);
             }
         });
-        Instructor_update.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Instructor_updateActionPerformed(evt);
-            }
-        });
 
         PC_NextPage.setText(">>");
         PC_NextPage.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1049,11 +1054,6 @@ public class MainFrame extends javax.swing.JFrame {
         Instructor_add_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Instructor_add_btnMouseClicked(evt);
-            }
-        });
-        Instructor_add_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Instructor_add_btnActionPerformed(evt);
             }
         });
 
@@ -1107,6 +1107,37 @@ public class MainFrame extends javax.swing.JFrame {
         Instructor_id.setText("jLabel2");
         Instructor_id.setEnabled(false);
 
+        Statistic_Instructor.setBackground(new java.awt.Color(236, 88, 88));
+        Statistic_Instructor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Statistic_InstructorMouseClicked(evt);
+            }
+        });
+
+        jPanel4.setBackground(new java.awt.Color(255, 190, 152));
+
+        jLabel7.setFont(new java.awt.Font("Menlo", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 227, 215));
+        jLabel7.setText("QUẢN LÝ PHÂN CÔNG");
+        jLabel7.setHorizontalAlignment(SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(337, 337, 337)
+                .addComponent(jLabel7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout QLPCLayout = new javax.swing.GroupLayout(QLPC);
         QLPC.setLayout(QLPCLayout);
         QLPCLayout.setHorizontalGroup(
@@ -1115,19 +1146,21 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(QLPCLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(QLPCLayout.createSequentialGroup()
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(QLPCLayout.createSequentialGroup()
-                                .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(title1)
-                                    .addComponent(title2))
-                                .addGap(50, 50, 50)
+                                .addGap(146, 146, 146)
                                 .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(Course_title_Cbb, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Instructor_Cbb, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(QLPCLayout.createSequentialGroup()
                                 .addComponent(Course_id)
-                                .addGap(37, 37, 37)
-                                .addComponent(Instructor_id)))
+                                .addGap(38, 38, 38)
+                                .addComponent(Instructor_id))
+                            .addComponent(title2)
+                            .addComponent(title1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -1146,60 +1179,67 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(PC_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(52, 52, 52))
                     .addGroup(QLPCLayout.createSequentialGroup()
-                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(QLPCLayout.createSequentialGroup()
-                                .addComponent(PC_PreviousPage)
-                                .addGap(18, 18, 18)
-                                .addComponent(PC_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)
-                                .addComponent(PC_Pagination)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(PC_NextPage))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(PC_PreviousPage)
+                        .addGap(18, 18, 18)
+                        .addComponent(PC_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(PC_Pagination)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PC_NextPage)
+                        .addGap(449, 449, 449)
+                        .addComponent(Statistic_Instructor, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(27, Short.MAX_VALUE))))
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         QLPCLayout.setVerticalGroup(
             QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(QLPCLayout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(QLPCLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Search3)
-                            .addComponent(CourseInstructor_search_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Instructor_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Instructor_update, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(instructor_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PC_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(QLPCLayout.createSequentialGroup()
-                        .addGap(47, 47, 47)
+                        .addGap(40, 40, 40)
                         .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(title1)
                             .addComponent(Course_title_Cbb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(title2)
-                            .addComponent(Instructor_Cbb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
-                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Course_id)
-                            .addComponent(Instructor_id)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(title2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Instructor_Cbb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19)
+                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(QLPCLayout.createSequentialGroup()
+                                .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(instructor_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(PC_clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(26, 26, 26))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLPCLayout.createSequentialGroup()
+                                .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(Course_id)
+                                    .addComponent(Instructor_id))
+                                .addGap(27, 27, 27))))
                     .addGroup(QLPCLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(QLPCLayout.createSequentialGroup()
+                                .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(CourseInstructor_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Search3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(Instructor_add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Instructor_update, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PC_PreviousPage)
-                    .addComponent(PC_Pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PC_NextPage)
-                    .addComponent(PC_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18))
+                .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(QLPCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(PC_PreviousPage)
+                        .addComponent(PC_Pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(PC_NextPage)
+                        .addComponent(PC_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Statistic_Instructor, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16))
         );
 
         Online_search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(236, 88, 88)));
@@ -1213,22 +1253,23 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Menlo", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 227, 215));
         jLabel6.setText("QUẢN LÝ KẾT QUẢ KHOÁ HỌC");
+        jLabel6.setHorizontalAlignment(SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(261, 261, 261)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(275, 275, 275))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel13.setText("StudentID:");
@@ -1352,6 +1393,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        Statistic_StudentGrade.setBackground(new java.awt.Color(236, 88, 88));
+        Statistic_StudentGrade.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Statistic_StudentGradeMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout QLKQKHLayout = new javax.swing.GroupLayout(QLKQKH);
         QLKQKH.setLayout(QLKQKHLayout);
         QLKQKHLayout.setHorizontalGroup(
@@ -1401,19 +1449,22 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(txtSearch3))
                 .addGap(40, 40, 40))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(QLKQKHLayout.createSequentialGroup()
+                        .addGap(246, 246, 246)
+                        .addComponent(jButton15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(KQKH_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(KQKH_Pagination)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Statistic_StudentGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(QLKQKHLayout.createSequentialGroup()
+                        .addContainerGap(19, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 822, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(21, 21, 21))
-            .addGroup(QLKQKHLayout.createSequentialGroup()
-                .addGap(246, 246, 246)
-                .addComponent(jButton15)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(KQKH_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(KQKH_Pagination)
-                .addGap(18, 18, 18)
-                .addComponent(jButton17)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         QLKQKHLayout.setVerticalGroup(
             QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1422,7 +1473,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(QLKQKHLayout.createSequentialGroup()
-                        .addGap(0, 2, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2)
@@ -1459,11 +1510,13 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(KQKH_Pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton15)
-                    .addComponent(jButton17)
-                    .addComponent(KQKH_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(QLKQKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(KQKH_Pagination, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton15)
+                        .addComponent(jButton17)
+                        .addComponent(KQKH_Page, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Statistic_StudentGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
         );
 
@@ -1544,22 +1597,6 @@ public class MainFrame extends javax.swing.JFrame {
         Panel_QLKQ.setBackground(new Color(255, 120, 108));
     }//GEN-LAST:event_Panel_QLKQMouseClicked
 
-    private void instructor_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructor_deleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_instructor_deleteActionPerformed
-
-    private void Instructor_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Instructor_updateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Instructor_updateActionPerformed
-
-    private void Instructor_add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Instructor_add_btnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Instructor_add_btnActionPerformed
-
-    private void Search3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Search3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Search3ActionPerformed
-
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         mouseX = evt.getX();
         mouseY = evt.getY();
@@ -1571,24 +1608,49 @@ public class MainFrame extends javax.swing.JFrame {
         setLocation(x, y);
     }//GEN-LAST:event_formMouseDragged
 
-    private void Online_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Online_searchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Online_searchActionPerformed
-
-    private void Online_search_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Online_search_btnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Online_search_btnActionPerformed
-
-    private void Online_previousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Online_previousPageActionPerformed
-
-    }//GEN-LAST:event_Online_previousPageActionPerformed
-
     private void Online_update_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Online_update_btnActionPerformed
-        // TODO add your handling code here:
+        if (OnlineCourse_table.getSelectedRow() != -1) {
+            int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn cập nhật môn học không?",
+                    "Xác nhận ", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                String CourseTitle = Online_title_tf.getText();
+                int DepartmentID = getIdFromString2((String) Department_Cbb1.getSelectedItem());
+                String Url = url_tf.getText();
+
+                int Credits = Integer.parseInt(Online_credits_tf.getText());
+                int id = Integer.parseInt(Course_id1.getText());
+                if (courseBLL.updateCourse(CourseTitle, Credits, DepartmentID, id, Url)) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                    PageKH(1);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thất bại");
+                }
+            } else {
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Hãy chọn khoá học");
+        }
     }//GEN-LAST:event_Online_update_btnActionPerformed
 
     private void Online_add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Online_add_btnActionPerformed
-        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm môn học không?",
+                "Xác nhận ", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            String CourseTitle = Online_title_tf.getText();
+            int DepartmentID = getIdFromString2((String) Department_Cbb1.getSelectedItem());
+            String Url = url_tf.getText();
+
+            int Credits = Integer.parseInt(Online_credits_tf.getText());
+            if (courseBLL.addCourse(CourseTitle, Credits, DepartmentID, Url)) {
+                JOptionPane.showMessageDialog(null, "Thêm thành công");
+                PageKH(1);
+            } else {
+                JOptionPane.showMessageDialog(null, "Thêm thất bại");
+            }
+        } else {
+            return;
+        }
     }//GEN-LAST:event_Online_add_btnActionPerformed
 
     private void Online_title_tfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Online_title_tfActionPerformed
@@ -1596,7 +1658,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_Online_title_tfActionPerformed
 
     private void Online_delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Online_delete_btnActionPerformed
-        // TODO add your handling code here:
+
+        if (OnlineCourse_table.getSelectedRow() != -1) {
+            int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn xoá môn học không?",
+                    "Xác nhận ", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                int id;
+                id = Integer.parseInt(Course_id1.getText());
+                if (courseBLL.deleteCourse(id)) {
+                    JOptionPane.showMessageDialog(null, "Xoá thành công");
+                    PageKH(1);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Xoá thất bại");
+                }
+            } else {
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Hãy chọn khoá học");
+        }
     }//GEN-LAST:event_Online_delete_btnActionPerformed
 
     private void Online_clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Online_clear_btnActionPerformed
@@ -1616,11 +1696,64 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_Onsite_previousPageActionPerformed
 
     private void Onsite_update_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Onsite_update_btnActionPerformed
-        // TODO add your handling code here:
+        if (OnlineCourse_table.getSelectedRow() != -1) {
+            int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn cập nhật môn học không?",
+                    "Xác nhận ", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                String CourseTitle = Onsite_title_tf.getText();
+                int DepartmentID = getIdFromString2((String) Department_Cbb2.getSelectedItem());
+
+                String Location = location_tf.getText();
+                String Days = days_tf.getText();
+
+                Date data = (Date) jSpinner1.getValue();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+                String Time = sdf.format(data);
+
+                int Credits = Integer.parseInt(Onsite_credits_tf.getText());
+                int id = Integer.parseInt(Onsite_courseID.getText());
+                if (courseBLL.updateCourseOnsite(CourseTitle, Credits, DepartmentID, id, Location, Days, Time)) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                    PageKH(1);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thất bại");
+                }
+            } else {
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Hãy chọn khoá học");
+        }
     }//GEN-LAST:event_Onsite_update_btnActionPerformed
 
     private void Onsite_add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Onsite_add_btnActionPerformed
-        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm môn học không?",
+                "Xác nhận ", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            String CourseTitle = Onsite_title_tf.getText();
+            int DepartmentID = getIdFromString2((String) Department_Cbb2.getSelectedItem());
+
+            String Location = location_tf.getText();
+            String Days = days_tf.getText();
+
+            Date data = (Date) jSpinner1.getValue();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+            String Time = sdf.format(data);
+
+            int Credits = Integer.parseInt(Onsite_credits_tf.getText());
+            if (courseBLL.addCourseOnsite(CourseTitle, Credits, DepartmentID, Location, Days, Time)) {
+                JOptionPane.showMessageDialog(null, "Thêm thành công");
+                PageKH(1);
+            } else {
+                JOptionPane.showMessageDialog(null, "Thêm thất bại");
+            }
+        } else {
+            return;
+        }
     }//GEN-LAST:event_Onsite_add_btnActionPerformed
 
     private void Onsite_title_tfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Onsite_title_tfActionPerformed
@@ -1628,7 +1761,24 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_Onsite_title_tfActionPerformed
 
     private void Onsite_delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Onsite_delete_btnActionPerformed
-        // TODO add your handling code here:
+        if (OnlineCourse_table.getSelectedRow() != -1) {
+            int result = JOptionPane.showConfirmDialog(null, "Bạn có muốn xoá môn học không?",
+                    "Xác nhận ", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                int id;
+                id = Integer.parseInt(Onsite_courseID.getText());
+                if (courseBLL.deleteCourseOnsite(id)) {
+                    JOptionPane.showMessageDialog(null, "Xoá thành công");
+                    PageKH(1);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Xoá thất bại");
+                }
+            } else {
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Hãy chọn khoá học");
+        }
     }//GEN-LAST:event_Onsite_delete_btnActionPerformed
 
     private void Onsite_clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Onsite_clear_btnActionPerformed
@@ -1654,25 +1804,31 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_QLKHStateChanged
 
     private void Online_clear_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Online_clear_btnMouseClicked
-        Online_add_btn.setEnabled(true);
-        Course_id1.setText(null);
-        Online_title_tf.setText(null);
-        Online_credits_tf.setText(null);
-        Department_Cbb1.setSelectedItem("Select department");
-        url_tf.setText(null);
-
+        if (OnlineCourse_table.getSelectedRow() != -1) {
+            Online_add_btn.setEnabled(true);
+            Course_id1.setText(null);
+            Online_title_tf.setText(null);
+            Online_credits_tf.setText(null);
+            Department_Cbb1.setSelectedItem("Select department");
+            url_tf.setText(null);
+            OnlineCourse_table.clearSelection();
+        }
     }//GEN-LAST:event_Online_clear_btnMouseClicked
 
     private void Onsite_clear_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Onsite_clear_btnMouseClicked
-        Onsite_add_btn.setEnabled(true);
-        Onsite_courseID.setText(null);
-        Onsite_title_tf.setText(null);
-        Onsite_credits_tf.setText(null);
-        Department_Cbb2.setSelectedItem("Select department");
-        location_tf.setText(null);
-        days_tf.setText(null);
-        time_tf.setText(null);
+        if (OnsiteCourse_table.getSelectedRow() != -1) {
+            Onsite_add_btn.setEnabled(true);
+            Onsite_courseID.setText(null);
+            Onsite_title_tf.setText(null);
+            Onsite_credits_tf.setText(null);
+            Department_Cbb2.setSelectedItem("Select department");
+            location_tf.setText(null);
+            days_tf.setText(null);
 
+            Date defaultDate = new Date();
+            jSpinner1.setValue(defaultDate);
+            OnsiteCourse_table.clearSelection();
+        }
     }//GEN-LAST:event_Onsite_clear_btnMouseClicked
 
     private void Online_previousPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Online_previousPageMouseClicked
@@ -1827,16 +1983,13 @@ public class MainFrame extends javax.swing.JFrame {
                 String Title = extractTitle(selectedCourse);
                 ci.setTitle(Title);
                 ci.getInstructor().setPersonID(personID);
-                try {
-                    if (courseInstructorBLL.updateCourseInstructor(ci, oldPersonID, oldCourseTitle)) {
-                        JOptionPane.showMessageDialog(null, "Cập nhật thành công");
-                        clearPC();
-                        updatePCTable();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Cập nhật thất bại ");
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
+
+                if (courseInstructorBLL.updateCourseInstructor(ci, oldPersonID, oldCourseTitle)) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                    clearPC();
+                    updatePCTable();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thất bại ");
                 }
 
             }
@@ -1862,20 +2015,15 @@ public class MainFrame extends javax.swing.JFrame {
                 int personID = findPersonID(courseInstructors, selectedInstructor);
 
                 // Gọi hàm xóa từ BLL
-                try {
-                    if (courseInstructorBLL.deleteCourseInstructor(personID, CourseTitle)) {
-                        JOptionPane.showMessageDialog(null, "Xóa thành công");
-                        String search = Search3.getText();
-                        clearPC();
-                        updatePCTable();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Xóa thất bại");
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(CourseInstructorDAL.class.getName()).log(Level.SEVERE, null, ex);
-                    ex.printStackTrace(); // In stack trace để kiểm tra lỗi trong Console
-                    JOptionPane.showMessageDialog(null, "Xóa thất bại: " + ex.getMessage());
+                if (courseInstructorBLL.deleteCourseInstructor(personID, CourseTitle)) {
+                    JOptionPane.showMessageDialog(null, "Xóa thành công");
+                    String search = Search3.getText();
+                    clearPC();
+                    updatePCTable();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Xóa thất bại");
                 }
+
             }
         }
     }//GEN-LAST:event_instructor_deleteMouseClicked
@@ -1930,6 +2078,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
         // TODO add your handling code here:
         try {
+            boolean check = false;
             for (int i = 0; i < model3.getRowCount(); ++i) {
                 int enrollmentID = Integer.parseInt(model3.getValueAt(i, 0).toString());
                 float grade = 0.0f;
@@ -1943,15 +2092,18 @@ public class MainFrame extends javax.swing.JFrame {
                 if (grade >= 0.0 && grade <= 4.0) {
                     sgBLL.editStudenGrade(enrollmentID, grade);
                     cbSelectCourse3.setSelectedItem("Selected Course");
+                    check = true;
                 } else {
                     // Xử lý nếu grade không nằm trong khoảng từ 0.0 đến 4.0
                     JOptionPane.showMessageDialog(null, "Grade is incorrect for enrollment ID: " + enrollmentID);
                 }
             }
-            JOptionPane.showMessageDialog(null, "Update successful!");
-            LoadStudentGradeTable(1);
-            KQKH_Page.setText("1");
-        } catch (Exception e) {
+            if (!check) {
+                JOptionPane.showMessageDialog(null, "Update successful!");
+                LoadStudentGradeTable(1);
+                KQKH_Page.setText("1");
+            }
+        } catch (HeadlessException | NumberFormatException e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnEditMouseClicked
@@ -1987,7 +2139,7 @@ public class MainFrame extends javax.swing.JFrame {
             Object[] r = {sg.getEnrollmentID(), sg.getCourseID(), sg.getTitle(), sg.getStudentID(), sg.getFirstName(), sg.getLastName(), sg.getGarde()};
             model3.addRow(r);
         }
-        if (titleSG == "Selected Course") {
+        if ("Selected Course".equals(titleSG)) {
 //            LoadStudentGradeTable(1);
 //            KQKH_Page.setText("1");
             KQKH_Page.setText("1");
@@ -2030,14 +2182,46 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_KQKH_PageActionPerformed
 
+    private void Statistic_OnlineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Statistic_OnlineMouseClicked
+
+        Statistic_OnlineCourse statistic_OnlineCourse = new Statistic_OnlineCourse();
+
+        statistic_OnlineCourse.setVisible(true);
+
+
+    }//GEN-LAST:event_Statistic_OnlineMouseClicked
+
+    private void Statistic_OnsiteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Statistic_OnsiteMouseClicked
+        Statistic_OnsiteCourse statistic_OnsiteCourse = new Statistic_OnsiteCourse();
+
+        statistic_OnsiteCourse.setVisible(true);
+
+    }//GEN-LAST:event_Statistic_OnsiteMouseClicked
+
+    private void Statistic_InstructorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Statistic_InstructorMouseClicked
+        Statistic_Instructor statistic_Instructor = new Statistic_Instructor();
+
+        statistic_Instructor.setVisible(true);
+    }//GEN-LAST:event_Statistic_InstructorMouseClicked
+
+    private void Statistic_StudentGradeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Statistic_StudentGradeMouseClicked
+        Statistic_StudentGrade statistic_StudentGrade = new Statistic_StudentGrade();
+
+        statistic_StudentGrade.setVisible(true);
+    }//GEN-LAST:event_Statistic_StudentGradeMouseClicked
+
 // Hàm setIcon cho các component    
     private void setIcons() {
-        Label_QLKH_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/education.png")));
-        Label_QLPC_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/speech.png")));
-        Label_QLKQ_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/exam.png")));
-        Online_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
-        Onsite_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
-        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("./Image/loupe.png")));
+        Label_QLKH_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/education.png")));
+        Label_QLPC_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/speech.png")));
+        Label_QLKQ_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/exam.png")));
+        Online_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        Onsite_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        CourseInstructor_search_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png")));
+        Statistic_Online.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/statistics.png")));
+        Statistic_Onsite.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/statistics.png")));
+        Statistic_Instructor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/statistics.png")));
+        Statistic_StudentGrade.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/statistics.png")));
     }
 
 // Ẩn các label
@@ -2168,13 +2352,15 @@ public class MainFrame extends javax.swing.JFrame {
 // Hàm ghi dữ liệu vào combobox 
     private void fillData() {
         List<Department> dpl = departmentBLL.getDepartmentList();
+        Department_Cbb1.removeAll();
         for (Department dp : dpl) {
-            String name = dp.getName();
+            String name = dp.getName() + " - ID: " + dp.getDepartmentID();
             Department_Cbb1.addItem(name);
             Department_Cbb2.addItem(name);
         }
 
-        List<Course> list = courseBLL.getAllCourse();
+        List<Course> list = courseBLL.getAllCourse2();
+        Course_title_Cbb.removeAll();
         for (Course c : list) {
             String course = c.getTitle() + " - ID: " + c.getCourseID();
             Course_title_Cbb.addItem(course);
@@ -2204,19 +2390,23 @@ public class MainFrame extends javax.swing.JFrame {
         int selectedRow = table.getSelectedRow();
 
         if (QLKH.getSelectedIndex() == 0) {
-            Course_id1.setText(table.getValueAt(selectedRow, 0) + "");
-            Online_title_tf.setText((String) table.getValueAt(selectedRow, 1));
-            Online_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
-            Department_Cbb1.setSelectedItem((String) table.getValueAt(selectedRow, 3));
+            int CourseID = (int) table.getValueAt(selectedRow, 0);
+            Course_id1.setText(CourseID + "");
+            Course c = courseBLL.getCourseWithID(CourseID);
+            Online_title_tf.setText(c.getTitle());
+            Online_credits_tf.setText(c.getCredits() + "");
+            Department_Cbb1.setSelectedItem(c.getDepartment().getName() + " - ID: " + c.getDepartment().getDepartmentID());
             url_tf.setText((String) table.getValueAt(selectedRow, 4));
         } else {
-            Onsite_courseID.setText(table.getValueAt(selectedRow, 0) + "");
-            Onsite_title_tf.setText((String) table.getValueAt(selectedRow, 1));
-            Onsite_credits_tf.setText(table.getValueAt(selectedRow, 2) + "");
-            Department_Cbb2.setSelectedItem((String) table.getValueAt(selectedRow, 3));
+            int CourseID = (int) table.getValueAt(selectedRow, 0);
+            Course c = courseBLL.getCourseWithID(CourseID);
+            Onsite_courseID.setText(CourseID + "");
+            Onsite_title_tf.setText(c.getTitle());
+            Onsite_credits_tf.setText(c.getCredits() + "");
+            Department_Cbb2.setSelectedItem(c.getDepartment().getName() + " - ID: " + c.getDepartment().getDepartmentID());
             location_tf.setText((String) table.getValueAt(selectedRow, 4));
             days_tf.setText((String) table.getValueAt(selectedRow, 5));
-            time_tf.setText(table.getValueAt(selectedRow, 6) + "");
+            jSpinner1.setValue(table.getValueAt(selectedRow, 6));
         }
     }
 
@@ -2533,6 +2723,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel QLKQKH;
     private javax.swing.JPanel QLPC;
     private javax.swing.JTextField Search3;
+    private javax.swing.JButton Statistic_Instructor;
+    private javax.swing.JButton Statistic_Online;
+    private javax.swing.JButton Statistic_Onsite;
+    private javax.swing.JButton Statistic_StudentGrade;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
@@ -2551,8 +2745,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -2562,6 +2758,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable3;
     private javax.swing.JLabel lbCourseID;
     private javax.swing.JLabel lbEnrollmentID;
@@ -2570,7 +2767,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel location;
     private javax.swing.JTextField location_tf;
     private javax.swing.JLabel time;
-    private javax.swing.JTextField time_tf;
     private javax.swing.JLabel title;
     private javax.swing.JLabel title1;
     private javax.swing.JLabel title2;
